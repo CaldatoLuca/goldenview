@@ -17,6 +17,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { authService } from "@/lib/services/auth.service";
 
 const registerSchema = z
   .object({
@@ -52,25 +53,8 @@ export default function RegisterPage() {
     setError(null);
 
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        }),
-      });
+      await authService.register(data);
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || "Errore durante la registrazione");
-      }
-
-      // Dopo la registrazione, effettua il login automatico
       const signInResult = await signIn("credentials", {
         email: data.email,
         password: data.password,
@@ -81,8 +65,9 @@ export default function RegisterPage() {
         throw new Error("Registrazione completata, ma errore nel login");
       }
 
-      router.push("/dashboard");
+      router.push("/");
     } catch (err) {
+      console.log("Errore durante la registrazione:", err);
       setError(err instanceof Error ? err.message : "Errore sconosciuto");
     } finally {
       setIsLoading(false);
