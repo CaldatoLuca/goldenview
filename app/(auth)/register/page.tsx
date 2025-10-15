@@ -10,11 +10,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FcGoogle as Google } from "react-icons/fc";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Accedi al tuo account</CardTitle>
+        <CardTitle>Registrati a GolgenView</CardTitle>
       </CardHeader>
       <CardContent>
         <form>
@@ -39,7 +39,7 @@ export default function LoginPage() {
       </CardContent>
       <CardFooter className="flex-col gap-2">
         <Button type="submit" className="w-full">
-          Accedi
+          Registrati
         </Button>
         <Button variant="outline" className="w-full">
           <Google /> Accedi con Google
