@@ -1,16 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { FcGoogle as Google } from "react-icons/fc";
+import { FaGoogle as Google, FaApple as Apple } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -18,6 +10,9 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { authService } from "@/lib/services/auth.service";
+import Link from "next/link";
+import { Spinner } from "@/components/ui/spinner";
+import { Separator } from "@/components/ui/separator";
 
 const registerSchema = z
   .object({
@@ -79,85 +74,111 @@ export default function RegisterPage() {
   };
 
   return (
-    <Card className="w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>Registrati a GolgenView</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-6">
-            {error && (
-              <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
-                {error}
-              </div>
+    <div className="w-full lg:px-8">
+      <h1 className="text-orange-100 text-3xl font-semibold mb-4">
+        Crea il tuo account
+      </h1>
+      <div className="text-orange-200 flex gap-2 mb-8">
+        Sei già registrato?
+        <Link href={"/login"} className="underline text-orange-600 font-medium">
+          Accedi
+        </Link>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col gap-6 mb-8">
+          {error && (
+            <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
+              {error}
+            </div>
+          )}
+
+          <div className="grid gap-2">
+            <Input
+              id="name"
+              type="text"
+              placeholder="Nome"
+              {...register("name")}
+            />
+            {errors.name && (
+              <p className="text-sm text-red-600">{errors.name.message}</p>
             )}
-
-            <div className="grid gap-2">
-              <Label htmlFor="name">Nome</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="Mario Rossi"
-                {...register("name")}
-              />
-              {errors.name && (
-                <p className="text-sm text-red-600">{errors.name.message}</p>
-              )}
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                {...register("email")}
-              />
-              {errors.email && (
-                <p className="text-sm text-red-600">{errors.email.message}</p>
-              )}
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" {...register("password")} />
-              {errors.password && (
-                <p className="text-sm text-red-600">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="confirmPassword">Conferma Password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                {...register("confirmPassword")}
-              />
-              {errors.confirmPassword && (
-                <p className="text-sm text-red-600">
-                  {errors.confirmPassword.message}
-                </p>
-              )}
-            </div>
-
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Registrazione..." : "Registrati"}
-            </Button>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex-col gap-2">
+
+          <div className="grid gap-2">
+            <Input
+              id="email"
+              type="email"
+              placeholder="Email"
+              {...register("email")}
+            />
+            {errors.email && (
+              <p className="text-sm text-red-600">{errors.email.message}</p>
+            )}
+          </div>
+
+          <div className="grid gap-2">
+            <Input
+              id="password"
+              type="password"
+              {...register("password")}
+              placeholder="Password"
+            />
+            {errors.password && (
+              <p className="text-sm text-red-600">{errors.password.message}</p>
+            )}
+          </div>
+
+          <div className="grid gap-2">
+            <Input
+              id="confirmPassword"
+              type="password"
+              {...register("confirmPassword")}
+              placeholder="Conferma Password"
+            />
+            {errors.confirmPassword && (
+              <p className="text-sm text-red-600">
+                {errors.confirmPassword.message}
+              </p>
+            )}
+          </div>
+        </div>
+
         <Button
-          variant="outline"
+          type="submit"
           className="w-full"
-          onClick={handleGoogleSignIn}
-          type="button"
+          disabled={isLoading}
+          size={"lg"}
         >
-          <Google className="mr-2" /> Accedi con Google
+          {isLoading && <Spinner />}
+          Crea Account
         </Button>
-      </CardFooter>
-    </Card>
+      </form>
+      <Separator className="my-8 bg-orange-300" />
+      <div className="grid gap-4 grid-cols-2">
+        <div className="col-span-1">
+          <Button
+            className="w-full text-orange-100 bg-orange-700"
+            variant="ghost"
+            onClick={handleGoogleSignIn}
+            size={"lg"}
+          >
+            <Google />
+            Google
+          </Button>
+        </div>
+
+        <div className="col-span-1">
+          <Button
+            className="w-full text-orange-100 bg-orange-700"
+            variant="ghost"
+            onClick={handleGoogleSignIn}
+            size={"lg"}
+          >
+            <Apple />
+            Apple
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
