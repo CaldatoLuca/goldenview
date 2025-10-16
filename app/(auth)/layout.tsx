@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Logo from "@/components/Logo";
+import Link from "next/link";
 
 export default async function AuthLayout({
   children,
@@ -17,6 +19,20 @@ export default async function AuthLayout({
               height={400}
               className="w-full h-full object-cover"
             />
+
+            <Link href={"/"} className="absolute top-4 left-4">
+              <Logo
+                textClassName="text-orange-100"
+                iconClassName="text-orange-200"
+                size={50}
+              />
+            </Link>
+
+            <div className="absolute bottom-20 left-1/2 -translate-x-1/2 text-orange-100">
+              <p className="text-xl text-center italic font-semibold">
+                Ogni Golden Hour ha una storia da raccontare, qual è la tua?
+              </p>
+            </div>
           </div>
           <div className="col-span-2 lg:col-span-1 flex justify-center items-center">
             {children}
