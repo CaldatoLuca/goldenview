@@ -73,6 +73,10 @@ export default function RegisterPage() {
     signIn("google", { callbackUrl: "/" });
   };
 
+  const handleAppleSignIn = () => {
+    signIn("apple", { callbackUrl: "/" });
+  };
+
   return (
     <div className="w-full lg:px-8">
       <h1 className="text-orange-100 text-3xl font-semibold mb-4">
@@ -171,7 +175,7 @@ export default function RegisterPage() {
           <Button
             className="w-full text-orange-100 bg-orange-700"
             variant="ghost"
-            onClick={handleGoogleSignIn}
+            onClick={handleAppleSignIn}
             size={"lg"}
           >
             <Apple />
