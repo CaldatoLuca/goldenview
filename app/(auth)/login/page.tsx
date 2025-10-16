@@ -14,7 +14,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Separator } from "@/components/ui/separator";
 
 const loginSchema = z.object({
-  email: z.string().email("Email non valida"),
+  email: z.email("Email non valida"),
   password: z.string().min(1, "La password è richiesta"),
 });
 
