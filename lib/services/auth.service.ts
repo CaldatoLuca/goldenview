@@ -1,7 +1,7 @@
 import { apiClient } from "../api-client";
 
 export interface RegisterRequest {
-  name: string;
+  name?: string | undefined;
   email: string;
   password: string;
 }

@@ -1,29 +1,22 @@
 import { PrismaClient } from "@prisma/client";
 import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
+import { ApiError, handleApiError, ErrorTypes } from "@/lib/api/errors";
+import { validate } from "@/lib/api/validations/validate";
+import { registerSchema } from "@/lib/api/validations/userSchema";
 
 const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
   try {
-    const { name, email, password } = await req.json();
-
-    if (!email || !password || !name) {
-      return NextResponse.json(
-        { error: "Tutti i campi sono obbligatori" },
-        { status: 400 }
-      );
-    }
+    const { name, email, password } = await validate(registerSchema, req);
 
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
 
     if (existingUser) {
-      return NextResponse.json(
-        { error: "Email già registrata" },
-        { status: 400 }
-      );
+      throw new ApiError("Email già registrata", ErrorTypes.CONFLICT.status);
     }
 
     const hashedPassword = await hash(password, 12);
@@ -47,10 +40,6 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Errore durante la registrazione:", error);
-    return NextResponse.json(
-      { error: "Errore del server durante la registrazione" },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }

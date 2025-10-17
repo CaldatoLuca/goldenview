@@ -16,7 +16,10 @@ import { Separator } from "@/components/ui/separator";
 
 const registerSchema = z
   .object({
-    name: z.string().min(2, "Il nome deve contenere almeno 2 caratteri"),
+    name: z
+      .string()
+      .min(2, "Il nome deve contenere almeno 2 caratteri")
+      .optional(),
     email: z.email("Email non valida"),
     password: z
       .string()
