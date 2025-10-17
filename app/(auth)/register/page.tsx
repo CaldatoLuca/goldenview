@@ -87,7 +87,7 @@ export default function RegisterPage() {
       </h1>
       <div className="text-orange-200 flex gap-2 mb-8">
         Sei già registrato?
-        <Link href={"/login"} className="underline text-orange-600 font-medium">
+        <Link href={"/login"} className="underline text-orange-50 font-medium">
           Accedi
         </Link>
       </div>

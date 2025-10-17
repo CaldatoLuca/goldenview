@@ -77,7 +77,7 @@ export default function LoginPage() {
         Non hai un account?
         <Link
           href={"/register"}
-          className="underline text-orange-600 font-medium"
+          className="underline text-orange-50 font-medium"
         >
           Registrati
         </Link>
