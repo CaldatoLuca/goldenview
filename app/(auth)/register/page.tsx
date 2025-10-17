@@ -13,6 +13,7 @@ import { authService } from "@/lib/services/auth.service";
 import Link from "next/link";
 import { Spinner } from "@/components/ui/spinner";
 import { Separator } from "@/components/ui/separator";
+import { PasswordField } from "@/components/ui/password-input";
 
 const registerSchema = z
   .object({
@@ -123,31 +124,13 @@ export default function RegisterPage() {
             )}
           </div>
 
-          <div className="grid gap-2">
-            <Input
-              id="password"
-              type="password"
-              {...register("password")}
-              placeholder="Password"
-            />
-            {errors.password && (
-              <p className="text-sm text-red-600">{errors.password.message}</p>
-            )}
-          </div>
+          <PasswordField register={register} errors={errors} />
 
-          <div className="grid gap-2">
-            <Input
-              id="confirmPassword"
-              type="password"
-              {...register("confirmPassword")}
-              placeholder="Conferma Password"
-            />
-            {errors.confirmPassword && (
-              <p className="text-sm text-red-600">
-                {errors.confirmPassword.message}
-              </p>
-            )}
-          </div>
+          <PasswordField
+            register={register}
+            errors={errors}
+            fieldName="confirmPassword"
+          />
         </div>
 
         <Button

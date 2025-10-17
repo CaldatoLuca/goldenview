@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Spinner } from "@/components/ui/spinner";
 import { Separator } from "@/components/ui/separator";
+import { PasswordField } from "@/components/ui/password-input";
 
 const loginSchema = z.object({
   email: z.email("Email non valida"),
@@ -102,17 +103,7 @@ export default function LoginPage() {
             )}
           </div>
 
-          <div className="grid gap-2">
-            <Input
-              id="password"
-              type="password"
-              {...register("password")}
-              placeholder="Password"
-            />
-            {errors.password && (
-              <p className="text-sm text-red-600">{errors.password.message}</p>
-            )}
-          </div>
+          <PasswordField register={register} errors={errors} />
         </div>
 
         <Button
