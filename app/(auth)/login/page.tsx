@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 
 const loginSchema = z.object({
   email: z.email("Email non valida"),
-  password: z.string().min(1, "La password è richiesta"),
+  password: z.string().min(8, "La password deve contenere almeno 8 caratteri"),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
