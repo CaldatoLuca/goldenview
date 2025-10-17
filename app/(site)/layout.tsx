@@ -1,11 +1,14 @@
+import Header from "@/components/Header";
+
 export default async function SiteLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-500">
+    <>
+      <Header />
       <main className="container mx-auto px-4 py-8">{children}</main>
-    </div>
+    </>
   );
 }
