@@ -44,6 +44,54 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
+    async signIn({ user, account }) {
+      if (
+        account &&
+        (account.provider === "google" || account.provider === "apple")
+      ) {
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email ?? "" },
+          include: { accounts: true },
+        });
+
+        if (existingUser) {
+          const hasAccount = existingUser.accounts.some(
+            (a) => a.provider === account.provider
+          );
+
+          if (!hasAccount) {
+            await prisma.account.create({
+              data: {
+                userId: existingUser.id,
+                type: account.type!,
+                provider: account.provider!,
+                providerAccountId: account.providerAccountId!,
+                access_token: account.access_token ?? null,
+                refresh_token: account.refresh_token ?? null,
+                expires_at: account.expires_at ?? null,
+                token_type: account.token_type ?? null,
+                scope: account.scope ?? null,
+                id_token: account.id_token ?? null,
+                session_state: account.session_state ?? null,
+              },
+            });
+          }
+
+          if (!existingUser.emailVerified) {
+            await prisma.user.update({
+              where: { id: existingUser.id },
+              data: { emailVerified: new Date() },
+            });
+          }
+
+          return true;
+        } else {
+          return true;
+        }
+      }
+
+      return true;
+    },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id;
