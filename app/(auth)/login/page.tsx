@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FaGoogle as Google, FaApple as Apple } from "react-icons/fa";
+import { FaGoogle as Google } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -65,10 +65,6 @@ export default function LoginPage() {
     signIn("google", { callbackUrl: "/" });
   };
 
-  const handleAppleSignIn = () => {
-    signIn("apple", { callbackUrl: "/" });
-  };
-
   return (
     <div className="w-full lg:px-8">
       <h1 className="text-orange-100 text-3xl font-semibold mb-4">
@@ -127,18 +123,6 @@ export default function LoginPage() {
           >
             <Google />
             Google
-          </Button>
-        </div>
-
-        <div className="col-span-1">
-          <Button
-            className="w-full text-orange-100 bg-orange-700"
-            variant="ghost"
-            onClick={handleAppleSignIn}
-            size={"lg"}
-          >
-            <Apple />
-            Apple
           </Button>
         </div>
       </div>
