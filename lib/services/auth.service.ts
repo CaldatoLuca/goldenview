@@ -14,11 +14,13 @@ export interface RegisterResponse {
   };
 }
 
-export interface LoginRequest {
+export interface ForgotPasswordRequest {
   email: string;
-  password: string;
 }
 
+export interface ForgotPasswordResponse {
+  message: string;
+}
 export interface User {
   id: string;
   name: string;
@@ -29,5 +31,13 @@ export interface User {
 export const authService = {
   register: async (data: RegisterRequest): Promise<RegisterResponse> => {
     return apiClient.post<RegisterResponse>("/auth/register", data);
+  },
+  forgotPassword: async (
+    data: ForgotPasswordRequest
+  ): Promise<ForgotPasswordResponse> => {
+    return apiClient.post<ForgotPasswordResponse>(
+      "/auth/forgot-password",
+      data
+    );
   },
 };

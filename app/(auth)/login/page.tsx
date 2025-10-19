@@ -112,7 +112,12 @@ export default function LoginPage() {
           Accedi
         </Button>
       </form>
-      <Separator className="my-8 bg-orange-300" />
+
+      <Button variant={"link"} asChild className="mt-4 p-0 text-orange-100">
+        <Link href={"/forgot-password"}>Password dimenticata?</Link>
+      </Button>
+
+      <Separator className="mt-4 mb-8 bg-orange-300" />
       <div className="grid gap-4 grid-cols-2">
         <div className="col-span-1">
           <Button
