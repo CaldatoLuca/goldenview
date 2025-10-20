@@ -13,6 +13,12 @@ export const forgotPasswordSchema = z.object({
   email: z.email("Email non valida"),
 });
 
-export const resetTokenSchema = z.object({
+export const validateTokenSchema = z.object({
+  token: z.string("Token non valido"),
+});
+
+export const resetPasswordSchema = z.object({
+  password: z.string().min(8, "La password deve contenere almeno 8 caratteri"),
+  userId: z.string("ID utente non valido"),
   token: z.string("Token non valido"),
 });

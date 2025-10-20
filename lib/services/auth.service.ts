@@ -22,12 +22,22 @@ export interface ForgotPasswordResponse {
   message: string;
 }
 
+export interface ValidateTokenRequest {
+  token: string;
+}
+
+export interface ValidateTokenResponse {
+  userId: string;
+}
+
 export interface ResetPasswordRequest {
+  password: string;
+  userId: string;
   token: string;
 }
 
 export interface ResetPasswordResponse {
-  userId: string;
+  message: string;
 }
 export interface User {
   id: string;
@@ -49,8 +59,13 @@ export const authService = {
     );
   },
   validateResetToken: async (
+    data: ValidateTokenRequest
+  ): Promise<ValidateTokenResponse> => {
+    return apiClient.post<ValidateTokenResponse>("/auth/reset-password", data);
+  },
+  resetPassword: async (
     data: ResetPasswordRequest
   ): Promise<ResetPasswordResponse> => {
-    return apiClient.post<ResetPasswordResponse>("/auth/reset-password", data);
+    return apiClient.put<ResetPasswordResponse>("/auth/reset-password", data);
   },
 };

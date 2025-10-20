@@ -27,6 +27,7 @@ type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 export default function ResetPasswordPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isValidating, setIsValidating] = useState(true);
   const [tokenError, setTokenError] = useState<string | null>(null);
@@ -51,7 +52,8 @@ export default function ResetPasswordPage() {
       }
 
       try {
-        await authService.validateResetToken({ token: token });
+        const res = await authService.validateResetToken({ token: token });
+        setUserId(res.userId);
         setIsValidating(false);
       } catch (err) {
         setTokenError(err instanceof Error ? err.message : "Token non valido");
@@ -67,9 +69,11 @@ export default function ResetPasswordPage() {
     setError(null);
 
     try {
-      console.log(data);
-
-      //    await authService.resetPassword({ ...data, token });
+      await authService.resetPassword({
+        ...data,
+        userId: userId!,
+        token: searchParams.get("token")!,
+      });
 
       router.push("/login");
     } catch (err) {
