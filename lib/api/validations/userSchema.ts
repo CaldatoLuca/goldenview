@@ -12,3 +12,7 @@ export const registerSchema = z.object({
 export const forgotPasswordSchema = z.object({
   email: z.email("Email non valida"),
 });
+
+export const resetTokenSchema = z.object({
+  token: z.string("Token non valido"),
+});

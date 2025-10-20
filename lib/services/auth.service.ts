@@ -21,6 +21,14 @@ export interface ForgotPasswordRequest {
 export interface ForgotPasswordResponse {
   message: string;
 }
+
+export interface ResetPasswordRequest {
+  token: string;
+}
+
+export interface ResetPasswordResponse {
+  userId: string;
+}
 export interface User {
   id: string;
   name: string;
@@ -39,5 +47,10 @@ export const authService = {
       "/auth/forgot-password",
       data
     );
+  },
+  validateResetToken: async (
+    data: ResetPasswordRequest
+  ): Promise<ResetPasswordResponse> => {
+    return apiClient.post<ResetPasswordResponse>("/auth/reset-password", data);
   },
 };
