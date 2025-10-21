@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Golden View",
-  description: "Your application description",
+  description: "Sunset and sunrise times for any location in the world",
 };
 
 export default function RootLayout({
