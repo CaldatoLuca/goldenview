@@ -1,41 +1,28 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
-
+import { Plus, Home } from "lucide-react";
+import Logo from "../Logo";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/admin",
     icon: Home,
   },
   {
-    title: "Inbox",
+    title: "Crea Spot",
     url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    icon: Plus,
   },
 ];
 
@@ -43,6 +30,14 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarContent>
+        <SidebarHeader>
+          <Link href="/admin">
+            <Logo
+              iconClassName="text-orange-600"
+              textClassName="text-orange-800"
+            />
+          </Link>
+        </SidebarHeader>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
