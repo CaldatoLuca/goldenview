@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Spot" ALTER COLUMN "userId" DROP NOT NULL;
