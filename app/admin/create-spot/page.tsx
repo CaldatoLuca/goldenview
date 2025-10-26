@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { UploadButton } from "@uploadthing/react";
 import type { OurFileRouter } from "@/app/api/uploadthing/core";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 const spotSchema = z.object({
   name: z.string().min(1, "Il nome è obbligatorio"),
@@ -123,18 +124,22 @@ export default function AdminCreateSpotPage() {
                 <div className="grid grid-cols-3 gap-2 mb-2">
                   {uploadedImages.map((url, index) => (
                     <div key={index} className="relative group">
-                      <img
+                      <Image
                         src={url}
                         alt={`Upload ${index + 1}`}
+                        width={200}
+                        height={96}
                         className="w-full h-24 object-cover rounded-md"
                       />
-                      <button
+                      <Button
                         type="button"
+                        variant="destructive"
+                        size="icon"
                         onClick={() => removeImage(index)}
-                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6"
                       >
                         <X className="w-4 h-4" />
-                      </button>
+                      </Button>
                     </div>
                   ))}
                 </div>
