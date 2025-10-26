@@ -11,11 +11,17 @@ import { spotService } from "@/lib/services/spotService";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { UploadButton } from "@uploadthing/react";
+import type { OurFileRouter } from "@/app/api/uploadthing/core";
+import { X } from "lucide-react";
 
 const spotSchema = z.object({
   name: z.string().min(1, "Il nome è obbligatorio"),
   userId: z.string().optional().nullable(),
-  images: z.array(z.url("URL immagine non valido")).optional().default([]),
+  images: z
+    .array(z.string().url("URL immagine non valido"))
+    .optional()
+    .default([]),
   latitude: z.number().min(-90).max(90).optional().nullable(),
   longitude: z.number().min(-180).max(180).optional().nullable(),
   address: z.string().optional().nullable(),
@@ -30,19 +36,28 @@ type AdminCreateFormData = z.infer<typeof spotSchema>;
 export default function AdminCreateSpotPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(spotSchema),
     defaultValues: {
       public: true,
       active: true,
+      images: [],
     },
   });
+
+  const removeImage = (index: number) => {
+    const newImages = uploadedImages.filter((_, i) => i !== index);
+    setUploadedImages(newImages);
+    setValue("images", newImages);
+  };
 
   const onSubmit = async (data: AdminCreateFormData) => {
     console.log(data);
@@ -99,6 +114,66 @@ export default function AdminCreateSpotPage() {
               )}
             </div>
 
+            <div className="grid gap-2 bg-orange-600 rounded-md p-4">
+              <Label className="text-orange-50">
+                Immagini ({uploadedImages.length}/5)
+              </Label>
+
+              {uploadedImages.length > 0 && (
+                <div className="grid grid-cols-3 gap-2 mb-2">
+                  {uploadedImages.map((url, index) => (
+                    <div key={index} className="relative group">
+                      <img
+                        src={url}
+                        alt={`Upload ${index + 1}`}
+                        className="w-full h-24 object-cover rounded-md"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <UploadButton<OurFileRouter, "imageUploader">
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  const urls = res.map((file) => file.ufsUrl);
+                  const newImages = [...uploadedImages, ...urls].slice(0, 5);
+                  setUploadedImages(newImages);
+                  setValue("images", newImages);
+                }}
+                onUploadError={(error: Error) => {
+                  setError(`Errore upload: ${error.message}`);
+                }}
+                appearance={{
+                  button:
+                    "bg-orange-300/60 text-orange-50 px-4 py-2 rounded-md hover:bg-orange-300/80 transition-all ut-ready:bg-orange-300/60 ut-uploading:bg-orange-300/40",
+                  allowedContent: "text-orange-100 text-sm",
+                }}
+                content={{
+                  button({ ready, isUploading }) {
+                    if (isUploading) return "Caricamento...";
+                    if (ready) return "Carica immagini";
+                    return "Preparazione...";
+                  },
+                  allowedContent({ ready, isUploading }) {
+                    if (!ready) return "Controllo...";
+                    if (isUploading) return "";
+                    return "Fino a 5 immagini (max 4MB)";
+                  },
+                }}
+              />
+              {errors.images && (
+                <p className="text-sm text-red-600">{errors.images.message}</p>
+              )}
+            </div>
+
             <div className="flex items-center gap-8">
               <div className="flex items-center gap-3">
                 <Controller
@@ -112,14 +187,9 @@ export default function AdminCreateSpotPage() {
                     />
                   )}
                 />
-                <Label htmlFor="public" className="text-orange-100">
+                <Label htmlFor="public" className="text-orange-50">
                   Pubblico
                 </Label>
-                {errors.public && (
-                  <p className="text-sm text-red-600">
-                    {errors.public.message}
-                  </p>
-                )}
               </div>
 
               <div className="flex items-center gap-3">
@@ -134,14 +204,9 @@ export default function AdminCreateSpotPage() {
                     />
                   )}
                 />
-                <Label htmlFor="active" className="text-orange-100">
+                <Label htmlFor="active" className="text-orange-50">
                   Attivo
                 </Label>
-                {errors.active && (
-                  <p className="text-sm text-red-600">
-                    {errors.active.message}
-                  </p>
-                )}
               </div>
             </div>
           </div>
