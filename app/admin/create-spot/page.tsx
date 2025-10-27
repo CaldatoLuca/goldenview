@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { spotService } from "@/lib/services/spotService";
 import { uploadThingService } from "@/lib/services/uploadThing.service";
@@ -16,14 +16,14 @@ import { UploadButton } from "@uploadthing/react";
 import type { OurFileRouter } from "@/app/api/uploadthing/core";
 import { Plus, X } from "lucide-react";
 import Image from "next/image";
+import CreateSpotMap, {
+  CreateSpotMapRef,
+} from "@/components/admin/CreateSpotMap";
 
 const spotSchema = z.object({
   name: z.string().min(1, "Il nome è obbligatorio"),
   userId: z.string().optional().nullable(),
-  images: z
-    .array(z.string().url("URL immagine non valido"))
-    .optional()
-    .default([]),
+  images: z.array(z.url("URL immagine non valido")).optional().default([]),
   latitude: z.number().min(-90).max(90).optional().nullable(),
   longitude: z.number().min(-180).max(180).optional().nullable(),
   address: z.string().optional().nullable(),
@@ -44,6 +44,14 @@ export default function AdminCreateSpotPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
+  const [location, setLocation] = useState<{
+    lat: number;
+    lng: number;
+    placeName: string;
+    address: string;
+  } | null>(null);
+
+  const mapRef = useRef<CreateSpotMapRef | null>(null);
   const [deletingIndex, setDeletingIndex] = useState<number | null>(null);
 
   const {
@@ -99,8 +107,23 @@ export default function AdminCreateSpotPage() {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <div className="bg-orange-400 p-8 rounded-md col-span-2 lg:col-span-1">
+    <div className="grid grid-cols-2 gap-8 mt-8">
+      <div className="col-span-2 p-4 rounded-md bg-orange-100 shadow-2xl">
+        {location ? (
+          <div className="grid grid-cols-2 gap-4">
+            <div>Latitudine: {location.lat}</div>
+            <div>Longitudine: {location.lng}</div>
+            <div>Luogo: {location.placeName}</div>
+            <div>Indirizzo: {location.address}</div>
+          </div>
+        ) : (
+          <div className="text-red-600 font-semibold">
+            Nessuna posizione selezionata!
+          </div>
+        )}
+      </div>
+
+      <div className="bg-orange-400 p-8 rounded-md col-span-2 lg:col-span-1 shadow-2xl">
         <h1 className="text-orange-50 text-3xl font-semibold mb-4">
           Crea Spot
         </h1>
@@ -256,7 +279,7 @@ export default function AdminCreateSpotPage() {
           <Button
             type="submit"
             className="w-full"
-            disabled={isLoading}
+            disabled={isLoading || !location}
             size={"lg"}
           >
             {isLoading && <Spinner />}
@@ -265,8 +288,16 @@ export default function AdminCreateSpotPage() {
         </form>
       </div>
 
-      <div className="bg-orange-50 p-8 rounded-md col-span-2 lg:col-span-1">
-        ciao
+      <div className="bg-orange-50 p-8 rounded-md col-span-2 lg:col-span-1 shadow-2xl">
+        <CreateSpotMap
+          ref={mapRef}
+          onLocationSelect={(
+            lat: number,
+            lng: number,
+            placeName: string,
+            address: string
+          ) => setLocation({ lat, lng, placeName, address })}
+        />
       </div>
     </div>
   );
