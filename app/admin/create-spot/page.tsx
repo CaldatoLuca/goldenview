@@ -8,12 +8,13 @@ import { z } from "zod";
 import { useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { spotService } from "@/lib/services/spotService";
+import { uploadThingService } from "@/lib/services/uploadThing.service";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { UploadButton } from "@uploadthing/react";
 import type { OurFileRouter } from "@/app/api/uploadthing/core";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import Image from "next/image";
 
 const spotSchema = z.object({
@@ -34,10 +35,16 @@ const spotSchema = z.object({
 
 type AdminCreateFormData = z.infer<typeof spotSchema>;
 
+interface UploadedImage {
+  url: string;
+  key: string;
+}
+
 export default function AdminCreateSpotPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
+  const [deletingIndex, setDeletingIndex] = useState<number | null>(null);
 
   const {
     register,
@@ -54,10 +61,26 @@ export default function AdminCreateSpotPage() {
     },
   });
 
-  const removeImage = (index: number) => {
-    const newImages = uploadedImages.filter((_, i) => i !== index);
-    setUploadedImages(newImages);
-    setValue("images", newImages);
+  const removeImage = async (index: number) => {
+    const imageToDelete = uploadedImages[index];
+    setDeletingIndex(index);
+
+    try {
+      await uploadThingService.delete({ fileKey: imageToDelete.key });
+
+      const newImages = uploadedImages.filter((_, i) => i !== index);
+      setUploadedImages(newImages);
+      setValue(
+        "images",
+        newImages.map((img) => img.url)
+      );
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Errore durante l'eliminazione"
+      );
+    } finally {
+      setDeletingIndex(null);
+    }
   };
 
   const onSubmit = async (data: AdminCreateFormData) => {
@@ -122,10 +145,10 @@ export default function AdminCreateSpotPage() {
 
               {uploadedImages.length > 0 && (
                 <div className="grid grid-cols-3 gap-2 mb-2">
-                  {uploadedImages.map((url, index) => (
+                  {uploadedImages.map((image, index) => (
                     <div key={index} className="relative group">
                       <Image
-                        src={url}
+                        src={image.url}
                         alt={`Upload ${index + 1}`}
                         width={200}
                         height={96}
@@ -136,9 +159,14 @@ export default function AdminCreateSpotPage() {
                         variant="destructive"
                         size="icon"
                         onClick={() => removeImage(index)}
+                        disabled={deletingIndex === index}
                         className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6"
                       >
-                        <X className="w-4 h-4" />
+                        {deletingIndex === index ? (
+                          <Spinner className="w-4 h-4" />
+                        ) : (
+                          <X className="w-4 h-4" />
+                        )}
                       </Button>
                     </div>
                   ))}
@@ -148,10 +176,19 @@ export default function AdminCreateSpotPage() {
               <UploadButton<OurFileRouter, "imageUploader">
                 endpoint="imageUploader"
                 onClientUploadComplete={(res) => {
-                  const urls = res.map((file) => file.ufsUrl);
-                  const newImages = [...uploadedImages, ...urls].slice(0, 5);
-                  setUploadedImages(newImages);
-                  setValue("images", newImages);
+                  const newImages = res.map((file) => ({
+                    url: file.ufsUrl,
+                    key: file.key,
+                  }));
+                  const allImages = [...uploadedImages, ...newImages].slice(
+                    0,
+                    5
+                  );
+                  setUploadedImages(allImages);
+                  setValue(
+                    "images",
+                    allImages.map((img) => img.url)
+                  );
                 }}
                 onUploadError={(error: Error) => {
                   setError(`Errore upload: ${error.message}`);
@@ -163,13 +200,13 @@ export default function AdminCreateSpotPage() {
                 }}
                 content={{
                   button({ ready, isUploading }) {
-                    if (isUploading) return "Caricamento...";
-                    if (ready) return "Carica immagini";
-                    return "Preparazione...";
+                    if (isUploading) return <Spinner />;
+                    if (ready) return <Plus />;
+                    return <Spinner />;
                   },
                   allowedContent({ ready, isUploading }) {
-                    if (!ready) return "Controllo...";
-                    if (isUploading) return "";
+                    if (!ready) return <Spinner />;
+                    if (isUploading) return <Spinner />;
                     return "Fino a 5 immagini (max 4MB)";
                   },
                 }}
