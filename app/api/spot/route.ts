@@ -3,16 +3,20 @@ import { NextResponse } from "next/server";
 import { ApiError, handleApiError, ErrorTypes } from "@/lib/api/errors";
 import { validate } from "@/lib/api/validations/validate";
 import { spotSchema } from "@/lib/api/validations/spotSchema";
+import { requireAdmin } from "@/lib/api/middleware/auth";
 
 const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
+  const session = await requireAdmin();
+
   try {
     const {
       name,
       description,
       public: isPublic,
       active,
+      images,
     } = await validate(spotSchema, req);
 
     const spot = await prisma.spot.create({
@@ -21,7 +25,8 @@ export async function POST(req: Request) {
         description,
         public: isPublic ?? true,
         active: active ?? true,
-        images: [],
+        images: images ?? [],
+        userId: session.user.role === "ADMIN" ? null : session.user.id,
       },
     });
 

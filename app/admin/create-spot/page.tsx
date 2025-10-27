@@ -65,14 +65,14 @@ export default function AdminCreateSpotPage() {
     setIsLoading(true);
     setError(null);
 
-    // try {
-    //   // await spotService.create(data);
-    // } catch (err) {
-    //   console.log("Errore durante la creazione:", err);
-    //   setError(err instanceof Error ? err.message : "Errore sconosciuto");
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    try {
+      await spotService.create(data);
+    } catch (err) {
+      console.log("Errore durante la creazione:", err);
+      setError(err instanceof Error ? err.message : "Errore sconosciuto");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
