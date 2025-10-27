@@ -14,7 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { UploadButton } from "@uploadthing/react";
 import type { OurFileRouter } from "@/app/api/uploadthing/core";
-import { Plus, X } from "lucide-react";
+import { AlertTriangle, Plus, X } from "lucide-react";
 import Image from "next/image";
 import CreateSpotMap, {
   CreateSpotMapRef,
@@ -92,12 +92,19 @@ export default function AdminCreateSpotPage() {
   };
 
   const onSubmit = async (data: AdminCreateFormData) => {
-    console.log(data);
     setIsLoading(true);
     setError(null);
 
+    const payload = {
+      ...data,
+      address: location?.address,
+      latitude: location?.lat,
+      longitude: location?.lng,
+      place: location?.placeName,
+    };
+
     try {
-      await spotService.create(data);
+      await spotService.create(payload);
     } catch (err) {
       console.log("Errore durante la creazione:", err);
       setError(err instanceof Error ? err.message : "Errore sconosciuto");
@@ -107,22 +114,7 @@ export default function AdminCreateSpotPage() {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-8 mt-8">
-      <div className="col-span-2 p-4 rounded-md bg-orange-100 shadow-2xl">
-        {location ? (
-          <div className="grid grid-cols-2 gap-4">
-            <div>Latitudine: {location.lat}</div>
-            <div>Longitudine: {location.lng}</div>
-            <div>Luogo: {location.placeName}</div>
-            <div>Indirizzo: {location.address}</div>
-          </div>
-        ) : (
-          <div className="text-red-600 font-semibold">
-            Nessuna posizione selezionata!
-          </div>
-        )}
-      </div>
-
+    <div className="container mx-auto grid grid-cols-2 gap-8 mt-8">
       <div className="bg-orange-400 p-8 rounded-md col-span-2 lg:col-span-1 shadow-2xl">
         <h1 className="text-orange-50 text-3xl font-semibold mb-4">
           Crea Spot
@@ -286,9 +278,29 @@ export default function AdminCreateSpotPage() {
             Crea
           </Button>
         </form>
+
+        <div className="p-4 rounded-md bg-orange-600 text-orange-100 shadow-2xl mt-8">
+          {location ? (
+            <div className="grid grid-cols-2 gap-4">
+              <div>Latitudine: {location.lat}</div>
+              <div>Longitudine: {location.lng}</div>
+              <div>Luogo: {location.placeName}</div>
+              <div>Indirizzo: {location.address}</div>
+            </div>
+          ) : (
+            <div className="text-red-100 font-semibold">
+              <div className="flex items-center gap-4">
+                <AlertTriangle /> Nessuna posizione selezionata!
+              </div>
+              <div className="text-sm mt-2">
+                Clicca sulla mappa per poter creare lo spot
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="bg-orange-50 p-8 rounded-md col-span-2 lg:col-span-1 shadow-2xl">
+      <div className="col-span-1 h-[600px] rounded-md overflow-hidden">
         <CreateSpotMap
           ref={mapRef}
           onLocationSelect={(

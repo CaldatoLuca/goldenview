@@ -26,23 +26,10 @@ const CreateSpotMap = forwardRef<CreateSpotMapRef, MapboxMapProps>(
   ({ onLocationSelect }, ref) => {
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null);
-    const markerRef = useRef<mapboxgl.Marker | null>(null);
 
     useImperativeHandle(ref, () => ({
       flyTo: (lat: number, lng: number) => {
         if (mapRef.current) {
-          if (markerRef.current) {
-            markerRef.current.remove();
-          }
-
-          const marker = new mapboxgl.Marker({
-            color: "#ff0000",
-          })
-            .setLngLat([lng, lat])
-            .addTo(mapRef.current);
-
-          markerRef.current = marker;
-
           mapRef.current.flyTo({
             center: [lng, lat],
             zoom: 14,
@@ -67,18 +54,6 @@ const CreateSpotMap = forwardRef<CreateSpotMapRef, MapboxMapProps>(
 
         const handleMapClick = async (e: mapboxgl.MapMouseEvent) => {
           const { lng, lat } = e.lngLat;
-
-          if (markerRef.current) {
-            markerRef.current.remove();
-          }
-
-          const marker = new mapboxgl.Marker({
-            color: "#ff0000",
-          })
-            .setLngLat([lng, lat])
-            .addTo(map);
-
-          markerRef.current = marker;
 
           try {
             const response = await fetch(
@@ -135,16 +110,13 @@ const CreateSpotMap = forwardRef<CreateSpotMapRef, MapboxMapProps>(
         map.on("click", handleMapClick);
 
         return () => {
-          if (markerRef.current) {
-            markerRef.current.remove();
-          }
           map.off("click", handleMapClick);
           map.remove();
         };
       }
     }, []);
 
-    return <div className="w-full h-full rounded-md" ref={mapContainerRef} />;
+    return <div className="w-full h-full" ref={mapContainerRef} />;
   }
 );
 
