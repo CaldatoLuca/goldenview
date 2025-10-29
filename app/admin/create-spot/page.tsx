@@ -19,6 +19,8 @@ import Image from "next/image";
 import CreateSpotMap, {
   CreateSpotMapRef,
 } from "@/components/admin/CreateSpotMap";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const spotSchema = z.object({
   name: z.string().min(1, "Il nome è obbligatorio"),
@@ -41,6 +43,7 @@ interface UploadedImage {
 }
 
 export default function AdminCreateSpotPage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
@@ -105,6 +108,8 @@ export default function AdminCreateSpotPage() {
 
     try {
       await spotService.create(payload);
+      router.push("/admin");
+      toast.success("Spot creato con successo");
     } catch (err) {
       console.log("Errore durante la creazione:", err);
       setError(err instanceof Error ? err.message : "Errore sconosciuto");
@@ -300,7 +305,7 @@ export default function AdminCreateSpotPage() {
         </div>
       </div>
 
-      <div className="col-span-1 h-[600px] rounded-md overflow-hidden">
+      <div className="col-span-2 lg:col-span-1 h-[600px] rounded-md overflow-hidden">
         <CreateSpotMap
           ref={mapRef}
           onLocationSelect={(
