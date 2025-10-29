@@ -17,7 +17,7 @@ export default function Header() {
   const { data: session, status } = useSession();
 
   return (
-    <header className="bg-orange-500 fixed w-full top-0 left-0 z-50 shadow-lg">
+    <header className="bg-orange-500 sticky w-full top-0 left-0 z-50 shadow-lg">
       <div className="container mx-auto p-4 flex items-center justify-between">
         <Link href="/">
           <Logo iconClassName="text-orange-50" />
