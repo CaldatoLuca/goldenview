@@ -114,7 +114,7 @@ export default function AdminCreateSpotPage() {
   };
 
   return (
-    <div className="container mx-auto grid grid-cols-2 gap-8 mt-8">
+    <div className="container mx-auto grid grid-cols-2 gap-8 mt-8 items-center">
       <div className="bg-orange-400 p-8 rounded-md col-span-2 lg:col-span-1 shadow-2xl">
         <h1 className="text-orange-50 text-3xl font-semibold mb-4">
           Crea Spot
