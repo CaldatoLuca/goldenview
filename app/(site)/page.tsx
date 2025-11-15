@@ -10,7 +10,7 @@ export default function Home() {
   const handleClearStorage = () => {
     localStorage.removeItem("locationRequested");
     localStorage.removeItem("userLocation");
-    window.location.reload(); // Ricarica la pagina per resettare lo stato
+    window.location.reload();
   };
 
   return (

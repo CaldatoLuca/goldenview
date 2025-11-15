@@ -1,4 +1,4 @@
-import { Plus, Home } from "lucide-react";
+import { Plus, Home, List } from "lucide-react";
 import Logo from "../Logo";
 import {
   Sidebar,
@@ -18,6 +18,11 @@ const items = [
     title: "Home",
     url: "/admin",
     icon: Home,
+  },
+  {
+    title: "Spots",
+    url: "/admin/spots",
+    icon: List,
   },
   {
     title: "Crea Spot",
