@@ -1,7 +1,16 @@
 "use client";
 
-import { spotService, Spot } from "@/lib/services/spotService";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useSpots } from "@/hooks/useSpots";
+import { spotService } from "@/lib/services/spotService";
+
+import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -10,25 +19,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Trash,
-  SquareCheck,
-  SquareX,
-  SquareArrowLeft,
-  SquareArrowRight,
-} from "lucide-react";
-import { Spinner } from "@/components/ui/spinner";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
+import { SquareCheck, SquareMinus, SquareX } from "lucide-react";
 
 export default function AdminSpotsPage() {
-  const [spots, setSpots] = useState<Spot[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const [search, setSearch] = useState("");
   const [place, setPlace] = useState("");
@@ -38,41 +32,25 @@ export default function AdminSpotsPage() {
   const [publicFilter, setPublicFilter] = useState<boolean | undefined>(
     undefined
   );
-
   const [page, setPage] = useState(1);
-  const [pagination, setPagination] = useState<any>(null);
+
   const limit = 10;
 
-  useEffect(() => {
-    fetchSpots();
-  }, [page, activeFilter, publicFilter]);
+  const { data, isLoading, isError, refetch } = useSpots({
+    page,
+    limit,
+    search: search || undefined,
+    place: place || undefined,
+    active: activeFilter,
+    public: publicFilter,
+  });
 
-  const fetchSpots = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const response = await spotService.getAll({
-        page,
-        limit,
-        search: search || undefined,
-        place: place || undefined,
-        active: activeFilter,
-        public: publicFilter,
-      });
-
-      setSpots(response.spots);
-      setPagination(response.pagination);
-    } catch (err: any) {
-      setError(err.message || "Errore nel caricamento degli spot spot");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const spots = data?.spots ?? [];
+  const pagination = data?.pagination;
 
   const handleSearch = () => {
     setPage(1);
-    fetchSpots();
+    refetch();
   };
 
   const handleReset = () => {
@@ -81,191 +59,149 @@ export default function AdminSpotsPage() {
     setActiveFilter(undefined);
     setPublicFilter(undefined);
     setPage(1);
-    fetchSpots();
+    refetch();
   };
 
   const handleDelete = async (id: string) => {
     try {
-      setDeletingId(id);
       await spotService.delete(id);
-
-      setSpots((prevSpots) => prevSpots.filter((spot) => spot.id !== id));
-
-      if (pagination) {
-        setPagination({
-          ...pagination,
-          total: pagination.total - 1,
-        });
-      }
       toast.success("Spot cancellato correttamente");
+
+      queryClient.invalidateQueries({
+        queryKey: ["spots"],
+      });
     } catch (err: any) {
       toast.error(err.message || "Errore nella cancellazione dello spot");
-    } finally {
-      setDeletingId(null);
     }
   };
 
   return (
     <div className="container mx-auto p-6">
-      <div className="mb-12 p-4 bg-orange-400 rounded-md shadow-2xl text-orange-50">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Cerca (nome, descrizione, indirizzo)
-            </label>
-            <Input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Es: surf, spiaggia..."
-              className="w-full"
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            />
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <Input
+          placeholder="Cerca per nome..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Luogo</label>
-            <Input
-              type="text"
-              value={place}
-              onChange={(e) => setPlace(e.target.value)}
-              placeholder="Es: Milano, Roma..."
-              className="w-full"
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            />
-          </div>
+        <Input
+          placeholder="Luogo..."
+          value={place}
+          onChange={(e) => setPlace(e.target.value)}
+        />
+
+        <div className="flex items-center space-x-2">
+          <Switch
+            id="active-filter"
+            checked={activeFilter ?? false}
+            onCheckedChange={(value: boolean) =>
+              setActiveFilter(value ? true : undefined)
+            }
+          />
+          <Label htmlFor="active-filter">Attivi</Label>
         </div>
 
-        <div className="flex flex-wrap gap-8 mb-4">
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="active-filter"
-              checked={activeFilter === false}
-              onCheckedChange={(checked) =>
-                setActiveFilter(checked ? false : undefined)
-              }
-            />
-            <Label htmlFor="active-filter" className="cursor-pointer">
-              Nascondi Attivi
-            </Label>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="public-filter"
-              checked={publicFilter === false}
-              onCheckedChange={(checked) =>
-                setPublicFilter(checked ? false : undefined)
-              }
-            />
-            <Label htmlFor="public-filter" className="cursor-pointer">
-              Nascondi Pubblici
-            </Label>
-          </div>
-        </div>
-
-        <div className="flex gap-3">
-          <Button onClick={handleSearch}>Cerca</Button>
-          <Button onClick={handleReset} variant={"secondary"}>
-            Reset Filtri
-          </Button>
+        <div className="flex items-center space-x-2">
+          <Switch
+            id="public-filter"
+            checked={publicFilter ?? false}
+            onCheckedChange={(value: boolean) =>
+              setPublicFilter(value ? true : undefined)
+            }
+          />
+          <Label htmlFor="public-filter">Pubblici</Label>
         </div>
       </div>
 
-      {loading ? (
-        <div className="flex justify-center py-12">
+      <div className="flex gap-3 mb-6">
+        <Button onClick={handleSearch}>Cerca</Button>
+        <Button variant="outline" onClick={handleReset}>
+          Reset
+        </Button>
+      </div>
+
+      {isLoading && (
+        <div className="flex justify-center p-10">
           <Spinner />
         </div>
-      ) : error ? (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-600">{error}</p>
-        </div>
-      ) : (
-        <>
-          {pagination && (
-            <div className="mb-4 flex justify-between items-center">
-              <div className="text-sm text-gray-600">
-                Trovati {""}
-                <span className="font-semibold">{pagination.total}</span> spot
-                {search || place ? " con i filtri applicati" : ""}
-              </div>
+      )}
 
-              {pagination.totalPages > 1 && (
-                <div className="flex items-center gap-2">
-                  <Button
-                    onClick={() => setPage(page - 1)}
-                    disabled={!pagination.hasPrev}
-                    size={"sm"}
-                    variant="outline"
-                  >
-                    <SquareArrowLeft />
-                  </Button>
+      {isError && (
+        <p className="text-center text-red-500 p-6">
+          Errore nel caricamento degli spot
+        </p>
+      )}
 
-                  <div className="text-sm">
-                    Pagina {pagination.page} di {pagination.total}
-                  </div>
+      {!isLoading && !isError && spots.length === 0 && (
+        <p className="text-center py-6">Nessun spot trovato.</p>
+      )}
 
-                  <Button
-                    onClick={() => setPage(page + 1)}
-                    disabled={!pagination.hasNext}
-                    size={"sm"}
-                    variant="outline"
-                  >
-                    <SquareArrowRight />
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
-
+      {spots.length > 0 && (
+        <div className="overflow-x-auto shadow rounded-lg">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Nome</TableHead>
-                <TableHead>Luogo</TableHead>
-                <TableHead>Attivo</TableHead>
-                <TableHead>Pubblico</TableHead>
-                <TableHead className="text-right">Azioni</TableHead>
+                <TableHead className="text-left">Nome</TableHead>
+                <TableHead className="text-left">Luogo</TableHead>
+                <TableHead className="text-left">Attivo</TableHead>
+                <TableHead className="text-left">Pubblico</TableHead>
+                <TableHead className="text-left">Azioni</TableHead>
               </TableRow>
             </TableHeader>
+
             <TableBody>
               {spots.map((spot) => (
                 <TableRow key={spot.id}>
-                  <TableCell className="font-medium">{spot.name}</TableCell>
+                  <TableCell>{spot.name}</TableCell>
                   <TableCell>{spot.place}</TableCell>
                   <TableCell>
                     {spot.active ? (
-                      <SquareCheck className="text-green-600" />
+                      <SquareCheck className="text-green-700" />
                     ) : (
-                      <SquareX className="text-red-600" />
+                      <SquareMinus className="text-red-700" />
                     )}
                   </TableCell>
                   <TableCell>
                     {spot.public ? (
-                      <SquareCheck className="text-green-600" />
+                      <SquareCheck className="text-green-700" />
                     ) : (
-                      <SquareX className="text-red-600" />
+                      <SquareMinus className="text-red-700" />
                     )}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell>
                     <Button
-                      variant={"destructive"}
-                      size={"sm"}
+                      variant="destructive"
                       onClick={() => handleDelete(spot.id)}
-                      disabled={deletingId === spot.id}
+                      size={"sm"}
                     >
-                      {deletingId === spot.id ? (
-                        <Spinner className="w-4 h-4" />
-                      ) : (
-                        <Trash />
-                      )}
+                      <SquareX />
                     </Button>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </>
+        </div>
+      )}
+
+      {/* PAGINAZIONE */}
+      {pagination && (
+        <div className="flex justify-between items-center mt-6">
+          <Button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+            ← Precedente
+          </Button>
+
+          <span>
+            Pagina {page} di {pagination.totalPages}
+          </span>
+
+          <Button
+            disabled={page === pagination.totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Successiva →
+          </Button>
+        </div>
       )}
     </div>
   );

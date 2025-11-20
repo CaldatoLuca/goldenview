@@ -45,6 +45,8 @@ export interface GetSpotsParams {
   active?: boolean;
   public?: boolean;
   place?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface GetSpotsResponse {
@@ -79,6 +81,10 @@ export const spotService = {
     if (params?.public !== undefined)
       searchParams.append("public", params.public.toString());
     if (params?.place) searchParams.append("place", params.place);
+    if (params?.latitude)
+      searchParams.append("latitude", params.latitude.toString());
+    if (params?.longitude)
+      searchParams.append("longitude", params.longitude.toString());
 
     const query = searchParams.toString();
     const url = query ? `/spot?${query}` : "/spot";
