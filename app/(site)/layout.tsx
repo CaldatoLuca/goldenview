@@ -8,7 +8,7 @@ export default async function SiteLayout({
   return (
     <>
       <Header />
-      <main className="container mx-auto px-4 py-8">{children}</main>
+      <main className="pt-18">{children}</main>
     </>
   );
 }
