@@ -14,29 +14,40 @@ export function useSpots(params: GetSpotsParams) {
 }
 
 export function usePopularSpots() {
-  return useQuery({
+  return useQuery<GetSpotsResponse>({
     queryKey: ["spots", "popular"],
-    queryFn: () => spotService.getAll({ limit: 10, public: true }),
+    queryFn: () =>
+      spotService.getAll({ limit: 10, active: true, public: true }),
   });
 }
 
 export function useLatestSpots() {
-  return useQuery({
+  return useQuery<GetSpotsResponse>({
     queryKey: ["spots", "latest"],
-    queryFn: () => spotService.getAll({ limit: 10 }),
+    queryFn: () =>
+      spotService.getAll({ limit: 10, public: true, active: true }),
   });
 }
 
-export function useNearbySpots(lat: number | null, lng: number | null) {
-  return useQuery({
-    queryKey: ["spots", "nearby", lat, lng],
-    queryFn: () =>
-      spotService.getAll({
-        limit: 10,
-        place: "nearby",
-        latitude: lat ?? undefined,
-        longitude: lng ?? undefined,
-      }),
+export function useNearbySpots(
+  lat: number | undefined,
+  lng: number | undefined,
+  params?: Omit<GetSpotsParams, "latitude" | "longitude">
+) {
+  const queryParams: GetSpotsParams = {
+    ...params,
+    limit: params?.limit ?? 10,
+    public: true,
+    active: true,
+    latitude: lat ?? undefined,
+    longitude: lng ?? undefined,
+  };
+
+  return useQuery<GetSpotsResponse>({
+    queryKey: ["spots", "nearby", lat, lng, params],
+
+    queryFn: () => spotService.getNearby(queryParams),
+
     enabled: lat != null && lng != null,
   });
 }

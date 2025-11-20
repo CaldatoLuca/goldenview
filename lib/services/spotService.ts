@@ -15,6 +15,7 @@ export interface Spot {
   active: boolean;
   createdAt: Date;
   updatedAt: Date;
+  distance?: number;
   user?: {
     id: string;
     name: string;
@@ -88,6 +89,28 @@ export const spotService = {
 
     const query = searchParams.toString();
     const url = query ? `/spot?${query}` : "/spot";
+
+    return apiClient.get<GetSpotsResponse>(url);
+  },
+
+  getNearby: async (params: GetSpotsParams): Promise<GetSpotsResponse> => {
+    const searchParams = new URLSearchParams();
+
+    if (params?.page) searchParams.append("page", params.page.toString());
+    if (params?.limit) searchParams.append("limit", params.limit.toString());
+    if (params?.search) searchParams.append("search", params.search);
+    if (params?.active !== undefined)
+      searchParams.append("active", params.active.toString());
+    if (params?.public !== undefined)
+      searchParams.append("public", params.public.toString());
+    if (params?.place) searchParams.append("place", params.place);
+    if (params?.latitude)
+      searchParams.append("latitude", params.latitude.toString());
+    if (params?.longitude)
+      searchParams.append("longitude", params.longitude.toString());
+
+    const query = searchParams.toString();
+    const url = query ? `/spot/nearby?${query}` : "/spot/nearby";
 
     return apiClient.get<GetSpotsResponse>(url);
   },
