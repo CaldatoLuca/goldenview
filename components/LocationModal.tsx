@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "./LocationProvider";
 import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
-import { LocateIcon, Sun } from "lucide-react";
+import { LocateIcon } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function LocationModal() {
@@ -27,6 +27,13 @@ export function LocationModal() {
     localStorage.setItem("locationRequested", "true");
     setShowModal(false);
   };
+
+  useEffect(() => {
+    (window as any).openLocationModal = () => setShowModal(true);
+    return () => {
+      delete (window as any).openLocationModal;
+    };
+  }, []);
 
   if (!showModal) return null;
 

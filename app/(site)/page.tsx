@@ -1,11 +1,12 @@
 "use client";
 import { useLocation } from "@/components/LocationProvider";
+import { LocationErrorBanner } from "@/components/LocationErrorBanner";
 import Hero from "@/components/Hero";
 import SpotSection from "@/components/SpotSection";
 import { useNearbySpots, useLatestSpots } from "@/hooks/useSpots";
 
 export default function Home() {
-  const { location, error } = useLocation();
+  const { location, error, requestLocation } = useLocation();
 
   const {
     data: latestSpots,
@@ -19,16 +20,25 @@ export default function Home() {
     isError: nearbyError,
   } = useNearbySpots(location?.latitude, location?.longitude);
 
+  const handleRetryLocation = () => {
+    if ((window as any).openLocationModal) {
+      (window as any).openLocationModal();
+    }
+  };
+
   return (
     <>
       <Hero />
+      <button
+        onClick={() => {
+          localStorage.removeItem("locationRequested");
+          localStorage.removeItem("userLocation");
+        }}
+      >
+        click
+      </button>
       <div className="p-4">
-        <p>
-          lat {location?.latitude} lon {location?.longitude}
-        </p>
-        {error && (
-          <div className="text-red-500">Errore geolocalizzazione: {error}</div>
-        )}
+        {!location && <LocationErrorBanner onRetry={handleRetryLocation} />}
 
         <SpotSection
           title="Ultimi Spot"
