@@ -18,10 +18,19 @@ export default function Header() {
 
   return (
     <header className="bg-orange-500 h-18 shadow-2xl fixed top-0 left-0 w-full z-99 flex items-center">
-      <div className="container mx-auto p-4 flex items-center justify-between">
+      <div className="container mx-auto py-4 flex items-center justify-between">
         <Link href="/">
           <Logo iconClassName="text-orange-50" />
         </Link>
+
+        <button
+          onClick={() => {
+            localStorage.removeItem("locationRequested");
+            localStorage.removeItem("userLocation");
+          }}
+        >
+          click
+        </button>
 
         {status === "loading" && <Spinner className="text-orange-50" />}
 

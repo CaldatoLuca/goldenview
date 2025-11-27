@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { PrismaClient, Prisma } from "@prisma/client";
 import axios from "axios";
+import SunCalc from "suncalc";
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -70,4 +71,9 @@ export async function fetchMapboxPlaces(query: string) {
     console.error("Errore nella chiamata a Mapbox:", error);
     return [];
   }
+}
+
+export function getSunsetTime(date: Date, lat: number, lng: number) {
+  const data = SunCalc.getTimes(date, lat, lng);
+  return data.sunset;
 }

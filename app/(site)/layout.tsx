@@ -8,7 +8,7 @@ export default async function SiteLayout({
   return (
     <>
       <Header />
-      <main className="pt-18">{children}</main>
+      <main className="pt-18 bg-orange-200">{children}</main>
     </>
   );
 }

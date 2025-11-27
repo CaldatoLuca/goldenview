@@ -29,15 +29,8 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <button
-        onClick={() => {
-          localStorage.removeItem("locationRequested");
-          localStorage.removeItem("userLocation");
-        }}
-      >
-        click
-      </button>
-      <div className="p-4">
+
+      <div className="container mx-auto px-2 py-8">
         {!location && <LocationErrorBanner onRetry={handleRetryLocation} />}
 
         <SpotSection
