@@ -57,7 +57,7 @@ export default function SpotCard({
   return (
     <div className="spot-card relative transition-transform duration-300 hover:scale-[1.01] hover:shadow-lg rounded-md overflow-hidden bg-white group">
       <div className="w-full h-56 relative">
-        <Link href={`/spots/${slug}`} className="block w-full h-full">
+        <Link href={`/spot/${slug}`} className="block w-full h-full">
           <Image
             src={image_url}
             alt={name}
@@ -76,7 +76,7 @@ export default function SpotCard({
         )}
       </div>
 
-      <Link href={`/spots/${slug}`} className="block">
+      <Link href={`/spot/${slug}`} className="block">
         <div className="p-4 text-neutral-800 flex flex-col gap-2 cursor-pointer">
           <h5 className="font-semibold text-base">{name}</h5>
           {description && (

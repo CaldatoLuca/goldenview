@@ -6,8 +6,8 @@ export interface Spot {
   slug: string;
   userId?: string | null;
   images: string[];
-  latitude?: number | null;
-  longitude?: number | null;
+  latitude: number;
+  longitude: number;
   address?: string | null;
   place?: string | null;
   description?: string | null;
@@ -113,6 +113,10 @@ export const spotService = {
     const url = query ? `/spot/nearby?${query}` : "/spot/nearby";
 
     return apiClient.get<GetSpotsResponse>(url);
+  },
+
+  getBySlug: async (slug: string): Promise<Spot> => {
+    return apiClient.get<Spot>(`/spot/${slug}`);
   },
 
   delete: async (id: string): Promise<DeleteResponse> => {

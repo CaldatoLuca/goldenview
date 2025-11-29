@@ -77,3 +77,25 @@ export function getSunsetTime(date: Date, lat: number, lng: number) {
   const data = SunCalc.getTimes(date, lat, lng);
   return data.sunset;
 }
+
+export function getDirectionsLink(lat: number, lng: number) {
+  const isMobile =
+    /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+
+  if (isMobile) {
+    const iosUrl = `maps://maps.google.com/maps?q=${lat},${lng}`;
+    const androidUrl = `geo:${lat},${lng}?q=${lat},${lng}`;
+
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      window.location.href = iosUrl;
+    } else if (/Android/.test(navigator.userAgent)) {
+      window.location.href = androidUrl;
+    } else {
+      window.open(`https://maps.google.com/maps?q=${lat},${lng}`, "_blank");
+    }
+  } else {
+    window.open(`https://maps.google.com/maps?q=${lat},${lng}`, "_blank");
+  }
+}

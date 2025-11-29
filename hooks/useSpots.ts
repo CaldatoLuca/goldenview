@@ -3,6 +3,7 @@ import {
   spotService,
   GetSpotsParams,
   GetSpotsResponse,
+  Spot,
 } from "@/lib/services/spotService";
 
 export function useSpots(params: GetSpotsParams) {
@@ -12,6 +13,15 @@ export function useSpots(params: GetSpotsParams) {
     staleTime: 1000 * 60 * 1,
   });
 }
+
+export const useSpotBySlug = (slug: string | undefined) => {
+  return useQuery<Spot>({
+    queryKey: ["spot", slug],
+    queryFn: () => spotService.getBySlug(slug!),
+    staleTime: 5 * 60 * 1000,
+    enabled: !!slug,
+  });
+};
 
 export function usePopularSpots() {
   return useQuery<GetSpotsResponse>({
