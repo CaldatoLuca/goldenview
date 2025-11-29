@@ -30,11 +30,12 @@ export default function Home() {
     <>
       <Hero />
 
-      <div className="container mx-auto px-2 py-8">
+      <div className="container mx-auto p-8">
         {!location && <LocationErrorBanner onRetry={handleRetryLocation} />}
 
         <SpotSection
           title="Ultimi Spot"
+          subtitle="Scopri gli ultimi spot"
           spots={latestSpots}
           isLoading={latestLoading}
           isError={latestError}
@@ -43,6 +44,7 @@ export default function Home() {
         {location && (
           <SpotSection
             title="Spot Vicini"
+            subtitle="Scopri gli spot più vicini a te"
             spots={nearbySpots}
             isLoading={nearbyLoading}
             isError={nearbyError}

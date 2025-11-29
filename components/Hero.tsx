@@ -9,7 +9,7 @@ export default function Hero() {
         Trova il tramonto più bello in giro per il mondo
       </h2>
 
-      <div className="relative z-10 w-1/3">
+      <div className="relative z-10 w-2/3 md:w-1/3">
         <SearchPlaceBar />
       </div>
     </section>

@@ -17,8 +17,8 @@ export default function Header() {
   const { data: session, status } = useSession();
 
   return (
-    <header className="bg-orange-500 h-18 shadow-2xl fixed top-0 left-0 w-full z-99 flex items-center">
-      <div className="container mx-auto py-4 flex items-center justify-between">
+    <header className="bg-orange-500 h-18 shadow-2xl fixed top-0 left-0 w-full flex items-center z-50">
+      <div className="container mx-auto p-4 flex items-center justify-between">
         <Link href="/">
           <Logo iconClassName="text-orange-50" />
         </Link>
@@ -45,7 +45,7 @@ export default function Header() {
             <HoverCardTrigger>
               <UserIcon />
             </HoverCardTrigger>
-            <HoverCardContent align="end">
+            <HoverCardContent align="end" className="z-99">
               <div className="flex justify-center mb-4">
                 <UserIcon iconClassName="text-orange-50 bg-orange-500" />
               </div>

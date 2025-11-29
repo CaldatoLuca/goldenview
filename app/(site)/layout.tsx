@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
 export default async function SiteLayout({
@@ -9,6 +10,7 @@ export default async function SiteLayout({
     <>
       <Header />
       <main className="pt-18 bg-orange-200">{children}</main>
+      <Footer />
     </>
   );
 }
