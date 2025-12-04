@@ -1,7 +1,8 @@
 import { GetSpotsResponse, Spot } from "@/lib/services/spotService";
 import { Skeleton } from "./ui/skeleton";
-import SpotCard from "./SpotCard";
+import SpotCard from "./spot-card/SpotCard";
 import { AlertCircle } from "lucide-react";
+import SpotCardSkeleton from "./spot-card/Skeleton";
 
 interface SpotSectionProps {
   spots: GetSpotsResponse | undefined;
@@ -23,18 +24,13 @@ export default function SpotSection({
   return (
     <section className="mb-16">
       <div className="mb-6">
-        <h2 className="text-3xl font-bold text-neutral-900 mb-1">{title}</h2>
-        <p className="text-neutral-600">{subtitle}</p>
+        <h2 className="text-3xl font-bold text-orange-900 mb-1">{title}</h2>
+        <p className="text-orange-800">{subtitle}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {isLoading ? (
-          Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton
-              key={i}
-              className="h-96 w-full bg-neutral-400 rounded-xl"
-            />
-          ))
+          Array.from({ length: 4 }).map((_, i) => <SpotCardSkeleton key={i} />)
         ) : isError ? (
           <div className="col-span-full flex flex-col items-center justify-center">
             <div className="bg-red-50 border border-red-200 rounded-xl p-8 max-w-md w-full text-center">

@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useLocation } from "./LocationProvider";
-import { Button } from "./ui/button";
-import { Spinner } from "./ui/spinner";
+import { Button } from "../ui/button";
+import { Spinner } from "../ui/spinner";
 import { LocateIcon } from "lucide-react";
 import { motion } from "framer-motion";
 

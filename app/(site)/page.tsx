@@ -1,6 +1,6 @@
 "use client";
-import { useLocation } from "@/components/LocationProvider";
-import { LocationErrorBanner } from "@/components/LocationErrorBanner";
+import { useLocation } from "@/components/location/LocationProvider";
+import { LocationErrorBanner } from "@/components/location/LocationErrorBanner";
 import Hero from "@/components/Hero";
 import SpotSection from "@/components/SpotSection";
 import { useNearbySpots, useLatestSpots } from "@/hooks/useSpots";

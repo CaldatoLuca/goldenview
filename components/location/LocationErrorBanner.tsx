@@ -1,5 +1,5 @@
 import { AlertCircle, MapPin } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { motion } from "framer-motion";
 
 interface LocationErrorBannerProps {

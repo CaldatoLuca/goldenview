@@ -1,13 +1,13 @@
 "use client";
 import Image from "next/image";
 import { FaUserCircle as User } from "react-icons/fa";
+import UserIconSkeleton from "./Skeleton";
 
 interface UserIconProps {
   width?: number;
   height?: number;
   userImage?: string | null;
-  textColor?: string;
-  bgColor?: string;
+  loading?: boolean;
   iconClassName?: string;
 }
 
@@ -15,8 +15,13 @@ export default function UserIcon({
   width = 40,
   height = 40,
   userImage,
-  iconClassName = "text-orange-50 bg-inherit",
+  loading = false,
+  iconClassName = "text-orange-400 bg-orange-200",
 }: UserIconProps) {
+  if (loading) {
+    return <UserIconSkeleton size={width} />;
+  }
+
   if (userImage) {
     return (
       <Image

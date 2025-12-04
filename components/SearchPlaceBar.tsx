@@ -1,8 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { IoSearchSharp as Search } from "react-icons/io5";
 import { fetchMapboxPlaces } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 const places = [
   "Trova il luogo perfetto...",
@@ -32,7 +33,9 @@ export default function SearchPlaceBar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [debouncedQuery, setDebouncedQuery] = useState(query);
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const [text, setText] = useState("");
   const [cityIndex, setCityIndex] = useState(0);
@@ -43,17 +46,16 @@ export default function SearchPlaceBar() {
     let timeout: NodeJS.Timeout;
 
     if (isDeleting) {
-      timeout = setTimeout(() => {
-        setText((prev) => prev.slice(0, -1));
-      }, 50);
+      timeout = setTimeout(() => setText((prev) => prev.slice(0, -1)), 50);
     } else {
-      timeout = setTimeout(() => {
-        setText((prev) => current.slice(0, prev.length + 1));
-      }, 100);
+      timeout = setTimeout(
+        () => setText((prev) => current.slice(0, prev.length + 1)),
+        100
+      );
     }
 
     if (!isDeleting && text === current) {
-      timeout = setTimeout(() => setIsDeleting(true), 1000);
+      timeout = setTimeout(() => setIsDeleting(true), 1200);
     }
 
     if (isDeleting && text === "") {
@@ -65,58 +67,91 @@ export default function SearchPlaceBar() {
   }, [text, isDeleting, cityIndex]);
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedQuery(query);
-    }, 500);
-
+    const handler = setTimeout(() => setDebouncedQuery(query), 500);
     return () => clearTimeout(handler);
   }, [query]);
 
   useEffect(() => {
+    if (!debouncedQuery) {
+      setResults([]);
+      setIsOpen(false);
+      return;
+    }
+
     const getPlaces = async () => {
       const places = await fetchMapboxPlaces(debouncedQuery);
       setResults(places);
+      setIsOpen(true);
     };
-
     getPlaces();
   }, [debouncedQuery]);
 
-  const goToPlace = (lat: number, lng: number, place: any) => {
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const goToPlace = (lat: number, lng: number) => {
     router.push(`/spots?lat=${lat}&lng=${lng}`);
-    setResults([]);
+    setIsOpen(false);
   };
 
   return (
-    <div className="relative w-full">
-      <input
-        type="text"
-        className="w-full py-4 px-6 shadow-2xl rounded-full bg-neutral-50 text-neutral-800 cursor-pointer focus:outline-none"
-        placeholder={`${text}`}
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <div className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-300 bg-orange-500 p-2 rounded-full cursor-pointer">
-        <Search />
+    <div className="relative w-full" ref={containerRef}>
+      <div className="relative">
+        <input
+          type="text"
+          className="w-full py-4 pl-6 pr-12 rounded-full shadow-lg bg-orange-100 text-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all"
+          placeholder={text}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => results.length > 0 && setIsOpen(true)}
+        />
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-orange-100 bg-orange-400 p-2 rounded-full shadow cursor-pointer hover:bg-orange-500 transition">
+          <Search size={20} />
+        </div>
       </div>
-      {results.length > 0 && (
-        <ul className="absolute z-10 top-full left-0 right-0 bg-white text-neutral-800 border rounded shadow mt-1 max-h-64 overflow-y-auto">
-          {results.map((place) => (
-            <li
-              key={place.id}
-              className="p-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() =>
-                goToPlace(
-                  place.geometry.coordinates[1],
-                  place.geometry.coordinates[0],
-                  place
-                )
-              }
-            >
-              {place.place_name}
-            </li>
-          ))}
-        </ul>
-      )}
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.ul
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="absolute top-full left-0 right-0 bg-orange-100 text-orange-800 border rounded-lg shadow-lg mt-2 max-h-64 overflow-y-auto overflow-x-hidden"
+          >
+            {results.length === 0 ? (
+              <li className="p-3 text-neutral-600 cursor-default">
+                Nessun posto trovato.
+              </li>
+            ) : (
+              results.map((place) => (
+                <motion.li
+                  key={place.id}
+                  whileHover={{ scale: 1.02, backgroundColor: "#fef3c7" }}
+                  className="p-3 cursor-pointer transition-colors"
+                  onClick={() =>
+                    goToPlace(
+                      place.geometry.coordinates[1],
+                      place.geometry.coordinates[0]
+                    )
+                  }
+                >
+                  {place.place_name}
+                </motion.li>
+              ))
+            )}
+          </motion.ul>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

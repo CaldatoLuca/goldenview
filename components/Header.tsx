@@ -4,35 +4,38 @@ import Link from "next/link";
 import Logo from "./Logo";
 import { Button } from "./ui/button";
 import { useSession, signOut } from "next-auth/react";
-import { Spinner } from "./ui/spinner";
-import UserIcon from "./UserIcon";
+import UserIcon from "./user/UserIcon";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Separator } from "./ui/separator";
+import UserIconSkeleton from "./user/Skeleton";
 
 export default function Header() {
   const { data: session, status } = useSession();
 
   return (
-    <header className="bg-orange-500 h-18 shadow-2xl fixed top-0 left-0 w-full flex items-center z-50">
+    <header className="bg-orange-300 h-18 shadow-2xl fixed top-0 left-0 w-full flex items-center z-50">
       <div className="container mx-auto p-4 flex items-center justify-between">
         <Link href="/">
-          <Logo iconClassName="text-orange-50" />
+          <Logo
+            iconClassName="text-orange-400"
+            textClassName="text-orange-900"
+          />
         </Link>
 
-        <button
+        {/* <button
           onClick={() => {
             localStorage.removeItem("locationRequested");
             localStorage.removeItem("userLocation");
           }}
         >
           click
-        </button>
+        </button> */}
 
-        {status === "loading" && <Spinner className="text-orange-50" />}
+        {status === "loading" && <UserIconSkeleton size={40} />}
 
         {status === "unauthenticated" && (
           <Button asChild variant={"secondary"}>

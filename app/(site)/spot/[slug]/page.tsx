@@ -7,9 +7,8 @@ import Image from "next/image";
 import SpotPositionMap from "@/components/SpotPositionMap";
 import { getDirectionsLink } from "@/lib/utils";
 import SpotDetailsSkeleton from "@/components/spot-details-page/Skeleton";
-import Carousel from "@/components/Carousel";
-import ExpandableText from "@/components/ExpandableText";
-import { Skeleton } from "@/components/ui/skeleton";
+import Carousel from "@/components/ui/Carousel";
+import ExpandableText from "@/components/ui/ExpandableText";
 
 export default function SpotDetailsPage() {
   const { slug } = useParams<{ slug: string }>();

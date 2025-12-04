@@ -1,7 +1,7 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import { LocationProvider } from "./components/LocationProvider";
+import { LocationProvider } from "./components/location/LocationProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 

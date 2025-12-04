@@ -15,8 +15,6 @@ type SpotCardProps = {
   lng?: number | null;
   slug: string;
   spot_id: string;
-  is_liked?: boolean;
-  is_saved?: boolean;
 };
 
 export default function SpotCard({
@@ -55,21 +53,20 @@ export default function SpotCard({
   }, [lat, lng]);
 
   return (
-    <div className="spot-card relative transition-transform duration-300 hover:scale-[1.01] hover:shadow-lg rounded-md overflow-hidden bg-white group">
-      <div className="w-full h-56 relative">
+    <div className="relative rounded-md overflow-hidden bg-orange-100 shadow-md hover:shadow-2xl transition-transform duration-300 hover:scale-[1.02] group">
+      <div className="relative w-full h-60 md:h-56">
         <Link href={`/spot/${slug}`} className="block w-full h-full">
           <Image
             src={image_url}
             alt={name}
-            height={256}
-            width={256}
-            loading="lazy"
-            className="object-cover w-full h-full cursor-pointer"
+            fill
+            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
           />
         </Link>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent pointer-events-none" />
 
         {sunset && (
-          <div className="text-sm text-white absolute start-4 top-4 bg-orange-500 flex gap-2 items-center px-2 py-1 opacity-95 shadow-2xl rounded-lg pointer-events-none">
+          <div className="absolute top-3 left-3 flex items-center gap-2 bg-gradient-to-r from-orange-400 to-orange-600 text-orange-50 px-3 py-1 rounded-full text-sm shadow-lg pointer-events-none">
             <Clock />
             {sunset}
           </div>
@@ -77,19 +74,21 @@ export default function SpotCard({
       </div>
 
       <Link href={`/spot/${slug}`} className="block">
-        <div className="p-4 text-neutral-800 flex flex-col gap-2 cursor-pointer">
-          <h5 className="font-semibold text-base">{name}</h5>
+        <div className="p-4 flex flex-col gap-2 cursor-pointer">
+          <h5 className="font-semibold text-lg md:text-base text-orange-900 truncate">
+            {name}
+          </h5>
           {description && (
-            <p className="text-sm w-2/3 line-clamp-2 text-neutral-600">
+            <p className="text-sm text-orange-700 line-clamp-3 md:line-clamp-2">
               {description}
             </p>
           )}
-          <div className="flex justify-between items-center mt-6">
-            <div className="flex items-center gap-2 text-neutral-700">
+          {place_name && (
+            <div className="flex items-center gap-2 mt-4 text-orange-600 text-sm">
               <Location />
-              <p className="text-sm line-clamp-1">{place_name}</p>
+              <span className="line-clamp-1">{place_name}</span>
             </div>
-          </div>
+          )}
         </div>
       </Link>
     </div>
