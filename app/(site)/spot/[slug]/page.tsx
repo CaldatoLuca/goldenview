@@ -6,7 +6,10 @@ import { FaDirections as Directions } from "react-icons/fa";
 import Image from "next/image";
 import SpotPositionMap from "@/components/SpotPositionMap";
 import { getDirectionsLink } from "@/lib/utils";
-import { Spinner } from "@/components/ui/spinner";
+import SpotDetailsSkeleton from "@/components/spot-details-page/Skeleton";
+import Carousel from "@/components/Carousel";
+import ExpandableText from "@/components/ExpandableText";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SpotDetailsPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -17,16 +20,16 @@ export default function SpotDetailsPage() {
     isError: spotError,
   } = useSpotBySlug(slug);
 
-  if (!spot) {
-    return;
-  }
-
   if (spotLoading) {
-    return <Spinner />;
+    return <SpotDetailsSkeleton />;
   }
 
   if (spotError) {
     return <div>errore</div>;
+  }
+
+  if (!spot) {
+    return;
   }
 
   const mainImage = spot.images[0];
@@ -34,6 +37,10 @@ export default function SpotDetailsPage() {
 
   return (
     <>
+      <div className="col-span-5 h-96 lg:hidden">
+        <Carousel images={spot.images} />
+      </div>
+
       <section className="container mx-auto p-8">
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 flex justify-between items-center">
@@ -55,7 +62,7 @@ export default function SpotDetailsPage() {
             </div>
           </div>
 
-          <div className="col-span-5 grid grid-cols-5 gap-2 h-96">
+          <div className="col-span-5 hidden lg:grid grid-cols-5 gap-2 h-96">
             <div className="col-span-3 h-full overflow-hidden rounded-lg relative">
               <Image
                 src={mainImage}
@@ -82,11 +89,12 @@ export default function SpotDetailsPage() {
             </div>
           </div>
 
-          <div className="col-span-3 text-orange-900 p-8 shadow-2xl rounded-md bg-orange-300/80">
-            <p>{spot.description}</p>
+          <div className="col-span-5 lg:col-span-3 text-orange-900 p-8 shadow-2xl rounded-md bg-orange-300/80">
+            <ExpandableText text={spot.description} />
+            <p className="hidden lg:block">{spot.description}</p>
           </div>
 
-          <div className="col-span-2">
+          <div className="col-span-5 lg:col-span-2">
             <div className="flex flex-col gap-4">
               <h5 className="text-orange-800 font-medium">Posizione</h5>
               <div className="h-80 rounded-lg overflow-hidden">
