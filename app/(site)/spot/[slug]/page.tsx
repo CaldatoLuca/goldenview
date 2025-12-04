@@ -4,11 +4,8 @@ import { useSpotBySlug } from "@/hooks/useSpots";
 import { Button } from "@/components/ui/button";
 import { FaDirections as Directions } from "react-icons/fa";
 import Image from "next/image";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import SpotPositionMap from "@/components/SpotPositionMap";
-import Footer from "@/components/Footer";
 import { getDirectionsLink } from "@/lib/utils";
-import RenderStars from "@/components/RenderStars";
 import { Spinner } from "@/components/ui/spinner";
 
 export default function SpotDetailsPage() {
@@ -37,11 +34,13 @@ export default function SpotDetailsPage() {
 
   return (
     <>
-      <section className="container mx-auto px-4 py-12 text-neutral-800">
+      <section className="container mx-auto p-8">
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 flex justify-between items-center">
             <div>
-              <h2>{spot?.name}</h2>
+              <h2 className="font-medium text-3xl text-orange-800">
+                {spot?.name}
+              </h2>
             </div>
 
             <div className="flex items-center gap-4">
@@ -83,20 +82,13 @@ export default function SpotDetailsPage() {
             </div>
           </div>
 
-          <div className="col-span-3 flex flex-col gap-4 ">
-            <Card>
-              <CardHeader>
-                <h5>Informazioni</h5>
-              </CardHeader>
-              <CardContent>
-                <p>{spot.description}</p>
-              </CardContent>
-            </Card>
+          <div className="col-span-3 text-orange-900 p-8 shadow-2xl rounded-md bg-orange-300/80">
+            <p>{spot.description}</p>
           </div>
 
           <div className="col-span-2">
             <div className="flex flex-col gap-4">
-              <h5>Posizione</h5>
+              <h5 className="text-orange-800 font-medium">Posizione</h5>
               <div className="h-80 rounded-lg overflow-hidden">
                 <SpotPositionMap
                   latitude={spot.latitude}
@@ -118,8 +110,6 @@ export default function SpotDetailsPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </>
   );
 }
