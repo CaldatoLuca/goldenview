@@ -100,7 +100,7 @@ export default function SearchPlaceBar() {
   }, []);
 
   const goToPlace = (lat: number, lng: number) => {
-    router.push(`/spots?lat=${lat}&lng=${lng}`);
+    router.push(`/spot?lat=${lat}&lng=${lng}`);
     setIsOpen(false);
   };
 
@@ -126,7 +126,7 @@ export default function SearchPlaceBar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full left-0 right-0 bg-orange-100 text-orange-800 border rounded-lg shadow-lg mt-2 max-h-64 overflow-y-auto overflow-x-hidden"
+            className="absolute top-full left-0 right-0 bg-orange-100 text-orange-800 border rounded-lg shadow-lg mt-2 max-h-64 overflow-y-auto overflow-x-hidden z-99"
           >
             {results.length === 0 ? (
               <li className="p-3 text-neutral-600 cursor-default">

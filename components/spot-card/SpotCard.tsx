@@ -10,7 +10,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { AlertTriangle, CircleQuestionMark } from "lucide-react";
+import { CircleQuestionMark } from "lucide-react";
 
 type SpotCardProps = {
   name: string;
