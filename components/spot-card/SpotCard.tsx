@@ -1,10 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { getSunsetTime } from "@/lib/utils";
+import { getSunsetInfo } from "@/lib/sun-calc";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaClock as Clock, FaLocationDot as Location } from "react-icons/fa6";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { AlertTriangle, CircleQuestionMark } from "lucide-react";
 
 type SpotCardProps = {
   name: string;
@@ -27,30 +33,40 @@ export default function SpotCard({
   slug,
 }: SpotCardProps) {
   const date = new Date();
-  const [sunset, setSunset] = useState<string | null>(null);
+  const [sunset, setSunset] = useState<string>("");
+  const [sunAlert, setSunAlert] = useState<string | null>(null);
 
   useEffect(() => {
-    const sunsetTime = getSunsetTime(date, lat!, lng!);
-    if (sunsetTime) {
-      const sunsetHour = sunsetTime.getHours();
-      const sunsetMinute = sunsetTime.getMinutes();
-      const sunsetTimeFormatted = `${sunsetHour
-        .toString()
-        .padStart(2, "0")}:${sunsetMinute.toString().padStart(2, "0")}`;
+    if (!lat || !lng) return;
 
-      const currentHour = date.getHours();
-      const currentMinute = date.getMinutes();
-      const currentTimeFormatted = `${currentHour
-        .toString()
-        .padStart(2, "0")}:${currentMinute.toString().padStart(2, "0")}`;
+    const result = getSunsetInfo(date, lat, lng);
 
-      if (sunsetTimeFormatted < currentTimeFormatted) {
-        setSunset(`Domani ${sunsetTimeFormatted}`);
-      } else {
-        setSunset(`Oggi ${sunsetTimeFormatted}`);
-      }
+    setSunAlert(null);
+
+    if (!result.value) {
+      setSunset("—");
+      setSunAlert(result.info);
+      return;
     }
-  }, [lat, lng]);
+
+    const h = result.value.getHours().toString().padStart(2, "0");
+    const m = result.value.getMinutes().toString().padStart(2, "0");
+    const formatted = `${h}:${m}`;
+
+    const now = date;
+    const nowStr = `${now.getHours().toString().padStart(2, "0")}:${now
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}`;
+
+    const prefix = formatted < nowStr ? "Domani" : "Oggi";
+
+    setSunset(`${prefix} ${formatted}`);
+
+    if (result.type !== "sunset") {
+      setSunAlert(result.info);
+    }
+  }, [lat, lng, date]);
 
   return (
     <div className="relative rounded-md overflow-hidden bg-orange-100 shadow-md hover:shadow-2xl transition-transform duration-300 hover:scale-[1.02] group">
@@ -69,6 +85,19 @@ export default function SpotCard({
           <div className="absolute top-3 left-3 flex items-center gap-2 bg-gradient-to-r from-orange-400 to-orange-600 text-orange-50 px-3 py-1 rounded-full text-sm shadow-lg pointer-events-none">
             <Clock />
             {sunset}
+          </div>
+        )}
+
+        {sunAlert && (
+          <div className="absolute top-3 right-3">
+            <HoverCard>
+              <HoverCardTrigger>
+                <CircleQuestionMark className="text-orange-500" />
+              </HoverCardTrigger>
+              <HoverCardContent align="end" className="z-99 text-sm p-2">
+                {sunAlert}
+              </HoverCardContent>
+            </HoverCard>
           </div>
         )}
       </div>
