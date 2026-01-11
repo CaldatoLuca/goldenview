@@ -35,7 +35,7 @@ export default function SpotsPage() {
   return (
     <section className="container mx-auto p-8">
       <div className="grid grid-cols-7 h-full gap-12">
-        <div className="col-span-4 h-full flex flex-col text-neutral-800">
+        <div className="col-span-7 lg:col-span-4 h-full flex flex-col text-neutral-800">
           <SearchPlaceBar />
 
           <ul className="flex-1 rounded-md mt-8">
@@ -55,7 +55,7 @@ export default function SpotsPage() {
           </ul>
         </div>
 
-        <div className="col-span-3">
+        <div className="col-span-3 hidden lg:block">
           <div className="sticky top-28 bg-neutral-400 rounded-2xl h-[calc(100vh-10rem)] overflow-hidden shadow-xl">
             <SearchSpotMap
               longitude={lng || nearbySpots.spots[0].longitude}
