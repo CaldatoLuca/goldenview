@@ -1,8 +1,10 @@
 "use client";
 import SearchPlaceBar from "@/components/SearchPlaceBar";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export default function Hero() {
+  const t = useTranslations("hero");
   return (
     <section className="relative h-[calc(80vh)] flex justify-center items-center flex-col">
       <div className="absolute inset-0">
@@ -26,7 +28,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
-          Trova il tramonto più bello in giro per il mondo
+          {t("title")}
         </motion.h2>
 
         <motion.div

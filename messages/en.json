@@ -1,0 +1,213 @@
+{
+  "common": {
+    "appName": "Golden View",
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "search": "Search",
+    "reset": "Reset",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "header": {
+    "login": "Sign in",
+    "profile": "My profile",
+    "settings": "Settings",
+    "logout": "Sign out",
+    "admin": "Admin"
+  },
+  "hero": {
+    "title": "Find the most beautiful sunset in the world",
+    "searchPlaceholder": "Search a place..."
+  },
+  "footer": {
+    "tagline": "Discover and share the most beautiful spots in the world.",
+    "explore": {
+      "title": "Explore",
+      "popularSpots": "Popular spots",
+      "newAdditions": "New additions",
+      "nearbySunsets": "Nearby sunsets",
+      "seasonalMoments": "Seasonal moments"
+    },
+    "community": {
+      "title": "Community",
+      "guidelines": "Guidelines",
+      "submitSpot": "Submit a spot",
+      "photographyTips": "Photography tips",
+      "meetup": "Meetup"
+    },
+    "support": {
+      "title": "Support",
+      "helpCenter": "Help center",
+      "privacyPolicy": "Privacy policy",
+      "termsOfService": "Terms of service",
+      "contactUs": "Contact us"
+    },
+    "copyright": "© 2025 GoldenView. All rights reserved."
+  },
+  "home": {
+    "latestTitle": "Latest Spots",
+    "latestSubtitle": "Discover the latest spots",
+    "nearbyTitle": "Nearby Spots",
+    "nearbySubtitle": "Discover the spots closest to you"
+  },
+  "spotSection": {
+    "errorTitle": "Loading error",
+    "errorMessage": "Unable to load spots. Please try again later.",
+    "reload": "Reload page"
+  },
+  "spotCard": {
+    "today": "Today {time}",
+    "tomorrow": "Tomorrow {time}",
+    "sunset": "Sunset",
+    "sunrise": "Sunrise"
+  },
+  "spotList": {
+    "error": "Error loading spots",
+    "noResults": "No spots found",
+    "searchPlaceholder": "Search spots..."
+  },
+  "spotDetail": {
+    "directions": "Directions",
+    "getDirections": "Get directions",
+    "position": "Location",
+    "noDescription": "No description available.",
+    "images": "Images"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in to your account",
+      "noAccount": "Don't have an account?",
+      "register": "Sign up",
+      "emailLabel": "Email",
+      "emailPlaceholder": "mario@example.com",
+      "emailError": "Invalid email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "passwordError": "Password must be at least 8 characters",
+      "invalidCredentials": "Invalid email or password",
+      "submit": "Sign in",
+      "forgotPassword": "Forgot password?",
+      "orContinueWith": "Or continue with",
+      "google": "Google"
+    },
+    "register": {
+      "title": "Create your account",
+      "alreadyRegistered": "Already have an account?",
+      "login": "Sign in",
+      "nameLabel": "Name",
+      "namePlaceholder": "Mario Rossi",
+      "nameError": "Name must be at least 2 characters",
+      "emailLabel": "Email",
+      "emailPlaceholder": "mario@example.com",
+      "emailError": "Invalid email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "passwordError": "Password must be at least 8 characters",
+      "confirmPasswordLabel": "Confirm password",
+      "confirmPasswordPlaceholder": "••••••••",
+      "passwordMismatch": "Passwords do not match",
+      "submit": "Create account",
+      "orContinueWith": "Or continue with",
+      "google": "Google"
+    },
+    "forgotPassword": {
+      "title": "Reset your password",
+      "description": "Enter the email address for your account and we'll send you instructions to reset your password.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "mario@example.com",
+      "emailError": "Invalid email",
+      "submit": "Send",
+      "success": "Email sent successfully!"
+    },
+    "resetPassword": {
+      "title": "Enter your new password",
+      "description": "Once reset, you can use your new password to sign in to your account.",
+      "missingToken": "Token missing from URL",
+      "invalidToken": "Invalid token",
+      "passwordLabel": "New password",
+      "passwordPlaceholder": "••••••••",
+      "passwordError": "Password must be at least 8 characters",
+      "confirmPasswordLabel": "Confirm new password",
+      "confirmPasswordPlaceholder": "••••••••",
+      "passwordMismatch": "Passwords do not match",
+      "submit": "Reset password"
+    },
+    "adminLogin": {
+      "title": "Sign in",
+      "emailLabel": "Email",
+      "emailPlaceholder": "admin@example.com",
+      "emailError": "Invalid email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "passwordError": "Password must be at least 8 characters",
+      "invalidCredentials": "Invalid email or password",
+      "submit": "Sign in"
+    }
+  },
+  "location": {
+    "modalTitle": "We'll help you find the best spots near you",
+    "modalDescription": "To offer you precise suggestions nearby, we need your location. Don't worry, we won't share it with anyone!",
+    "later": "Later",
+    "allow": "Allow now"
+  },
+  "admin": {
+    "home": {
+      "title": "Admin"
+    },
+    "spots": {
+      "title": "Manage Spots",
+      "searchPlaceholder": "Search by name...",
+      "placePlaceholder": "Place...",
+      "activeFilter": "Active",
+      "publicFilter": "Public",
+      "search": "Search",
+      "reset": "Reset",
+      "loadingError": "Error loading spots",
+      "noResults": "No spots found.",
+      "nameHeader": "Name",
+      "placeHeader": "Place",
+      "activeHeader": "Active",
+      "publicHeader": "Public",
+      "actionsHeader": "Actions",
+      "deleteSuccess": "Spot deleted successfully",
+      "deleteError": "Error deleting spot",
+      "paginationPrev": "← Previous",
+      "paginationNext": "Next →",
+      "paginationInfo": "Page {page} of {totalPages}",
+      "createNew": "Create Spot"
+    },
+    "createSpot": {
+      "title": "Create Spot",
+      "namePlaceholder": "Name",
+      "nameRequired": "Name is required",
+      "descriptionPlaceholder": "Description",
+      "imagesLabel": "Images ({count}/5)",
+      "uploadError": "Upload error: {message}",
+      "imagesHint": "Up to 5 images (max 4MB each)",
+      "imageUrlError": "Invalid image URL",
+      "publicLabel": "Public",
+      "activeLabel": "Active",
+      "submit": "Create",
+      "latitudeLabel": "Latitude: {value}",
+      "longitudeLabel": "Longitude: {value}",
+      "placeLabel": "Place: {value}",
+      "addressLabel": "Address: {value}",
+      "noLocation": "No location selected!",
+      "locationHint": "Click on the map to set the spot location",
+      "success": "Spot created successfully"
+    }
+  },
+  "locale": {
+    "switch": "Switch language",
+    "it": "Italiano",
+    "en": "English"
+  }
+}
