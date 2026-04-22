@@ -39,13 +39,16 @@ export async function GET(req: NextRequest) {
         ? Prisma.sql`WHERE ${Prisma.raw(conditions.join(" AND "))}`
         : Prisma.empty;
 
-    // Query per gli spots con distanza
+    // Query per gli spots con distanza (Haversine, no PostGIS)
     const spots = await prisma.$queryRaw`
-      SELECT 
+      SELECT
         s.*,
-        ST_DistanceSphere(
-          ST_MakePoint(s.longitude, s.latitude),
-          ST_MakePoint(${longitude}, ${latitude})
+        6371000 * 2 * ASIN(
+          SQRT(
+            POWER(SIN(RADIANS(s.latitude - ${latitude}) / 2), 2) +
+            COS(RADIANS(${latitude})) * COS(RADIANS(s.latitude)) *
+            POWER(SIN(RADIANS(s.longitude - ${longitude}) / 2), 2)
+          )
         ) AS distance
       FROM "Spot" s
       ${whereClause}
