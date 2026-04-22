@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm audit:*)"
+      "Bash(npm audit:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm install:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(find \"C:\\\\Users\\\\utente\\\\Desktop\\\\goldenview\\\\app\\\\\\(auth\\)\" -name \"*.tsx\" -type f)",
+      "Bash(wc -l \"C:\\\\Users\\\\utente\\\\Desktop\\\\goldenview\\\\app\\\\\\(auth\\)\\\\register\\\\page.tsx\")",
+      "Bash(npx tsc:*)"
     ]
   }
 }

@@ -6,10 +6,12 @@ import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
 import { LocateIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export function LocationModal() {
   const [showModal, setShowModal] = useState(false);
   const { location, requestLocation, loading } = useLocation();
+  const t = useTranslations("location");
 
   useEffect(() => {
     const hasRequestedLocation = localStorage.getItem("locationRequested");
@@ -55,12 +57,10 @@ export function LocationModal() {
           </motion.div>
 
           <h2 className="text-2xl font-semibold text-orange-950 mb-3">
-            Ti aiutiamo a trovare i migliori Spot vicino a te
+            {t("modalTitle")}
           </h2>
           <p className="text-orange-900 mb-6 text-sm">
-            Per offrirti suggerimenti precisi e nelle vicinanze, abbiamo bisogno
-            della tua posizione. Non preoccuparti, non la condivideremo con
-            nessuno!
+            {t("modalDescription")}
           </p>
 
           <div className="flex gap-3 items-center justify-center w-full">
@@ -70,7 +70,7 @@ export function LocationModal() {
               variant="ghost"
               className="text-orange-700 hover:bg-orange-200"
             >
-              Più tardi
+              {t("later")}
             </Button>
             <Button
               onClick={handleAccept}
@@ -78,7 +78,7 @@ export function LocationModal() {
               size="lg"
               className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6"
             >
-              {loading ? <Spinner /> : "Consenti subito"}
+              {loading ? <Spinner /> : t("allow")}
             </Button>
           </div>
         </div>

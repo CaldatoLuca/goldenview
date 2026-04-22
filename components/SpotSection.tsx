@@ -1,8 +1,8 @@
 import { GetSpotsResponse, Spot } from "@/lib/services/spotService";
-import { Skeleton } from "./ui/skeleton";
 import SpotCard from "./spot-card/SpotCard";
 import { AlertCircle } from "lucide-react";
 import SpotCardSkeleton from "./spot-card/Skeleton";
+import { useTranslations } from "next-intl";
 
 interface SpotSectionProps {
   spots: GetSpotsResponse | undefined;
@@ -19,6 +19,7 @@ export default function SpotSection({
   title,
   subtitle,
 }: SpotSectionProps) {
+  const t = useTranslations("spotSection");
   const spotList = spots?.spots;
 
   return (
@@ -36,16 +37,16 @@ export default function SpotSection({
             <div className="bg-red-50 border border-red-200 rounded-xl p-8 max-w-md w-full text-center">
               <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
               <h4 className="text-lg font-semibold text-red-900 mb-2">
-                Errore nel caricamento
+                {t("errorTitle")}
               </h4>
               <p className="text-red-700 text-sm mb-4">
-                Non è stato possibile caricare gli spot. Riprova più tardi.
+                {t("errorMessage")}
               </p>
               <button
                 onClick={() => window.location.reload()}
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
               >
-                Ricarica pagina
+                {t("reload")}
               </button>
             </div>
           </div>

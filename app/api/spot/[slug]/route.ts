@@ -8,11 +8,11 @@ const prisma = new PrismaClient();
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
-    const slug = params.slug;
+    const { slug } = await params;
 
     if (!slug) {
       throw new ApiError("Slug obbligatorio", ErrorTypes.BAD_REQUEST.status);

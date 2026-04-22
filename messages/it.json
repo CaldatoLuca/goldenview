@@ -1,0 +1,213 @@
+{
+  "common": {
+    "appName": "Golden View",
+    "loading": "Caricamento...",
+    "error": "Errore",
+    "retry": "Riprova",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "confirm": "Conferma",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "close": "Chiudi",
+    "back": "Indietro",
+    "search": "Cerca",
+    "reset": "Reset",
+    "yes": "Sì",
+    "no": "No"
+  },
+  "header": {
+    "login": "Accedi",
+    "profile": "Il mio profilo",
+    "settings": "Impostazioni",
+    "logout": "Esci",
+    "admin": "Admin"
+  },
+  "hero": {
+    "title": "Trova il tramonto più bello in giro per il mondo",
+    "searchPlaceholder": "Cerca un luogo..."
+  },
+  "footer": {
+    "tagline": "Scopri e condividi gli Spot più belli del mondo.",
+    "explore": {
+      "title": "Esplora",
+      "popularSpots": "Spot popolari",
+      "newAdditions": "Nuove aggiunte",
+      "nearbySunsets": "Tramonti nelle vicinanze",
+      "seasonalMoments": "Momenti stagionali"
+    },
+    "community": {
+      "title": "Community",
+      "guidelines": "Linee guida",
+      "submitSpot": "Invia uno spot",
+      "photographyTips": "Consigli fotografici",
+      "meetup": "Meetup"
+    },
+    "support": {
+      "title": "Supporto",
+      "helpCenter": "Centro assistenza",
+      "privacyPolicy": "Informativa privacy",
+      "termsOfService": "Termini di servizio",
+      "contactUs": "Contattaci"
+    },
+    "copyright": "© 2025 GoldenView. All rights reserved."
+  },
+  "home": {
+    "latestTitle": "Ultimi Spot",
+    "latestSubtitle": "Scopri gli ultimi spot",
+    "nearbyTitle": "Spot Vicini",
+    "nearbySubtitle": "Scopri gli spot più vicini a te"
+  },
+  "spotSection": {
+    "errorTitle": "Errore nel caricamento",
+    "errorMessage": "Non è stato possibile caricare gli spot. Riprova più tardi.",
+    "reload": "Ricarica pagina"
+  },
+  "spotCard": {
+    "today": "Oggi {time}",
+    "tomorrow": "Domani {time}",
+    "sunset": "Tramonto",
+    "sunrise": "Alba"
+  },
+  "spotList": {
+    "error": "Errore nel caricamento degli spot",
+    "noResults": "Nessuno spot trovato",
+    "searchPlaceholder": "Cerca spot..."
+  },
+  "spotDetail": {
+    "directions": "Direzioni",
+    "getDirections": "Ottieni direzioni",
+    "position": "Posizione",
+    "noDescription": "Nessuna descrizione disponibile.",
+    "images": "Immagini"
+  },
+  "auth": {
+    "login": {
+      "title": "Accedi al tuo account",
+      "noAccount": "Non hai un account?",
+      "register": "Registrati",
+      "emailLabel": "Email",
+      "emailPlaceholder": "mario@esempio.it",
+      "emailError": "Email non valida",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "passwordError": "La password deve contenere almeno 8 caratteri",
+      "invalidCredentials": "Email o password non corretti",
+      "submit": "Accedi",
+      "forgotPassword": "Password dimenticata?",
+      "orContinueWith": "Oppure continua con",
+      "google": "Google"
+    },
+    "register": {
+      "title": "Crea il tuo account",
+      "alreadyRegistered": "Sei già registrato?",
+      "login": "Accedi",
+      "nameLabel": "Nome",
+      "namePlaceholder": "Mario Rossi",
+      "nameError": "Il nome deve contenere almeno 2 caratteri",
+      "emailLabel": "Email",
+      "emailPlaceholder": "mario@esempio.it",
+      "emailError": "Email non valida",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "passwordError": "La password deve contenere almeno 8 caratteri",
+      "confirmPasswordLabel": "Conferma password",
+      "confirmPasswordPlaceholder": "••••••••",
+      "passwordMismatch": "Le password non corrispondono",
+      "submit": "Crea Account",
+      "orContinueWith": "Oppure continua con",
+      "google": "Google"
+    },
+    "forgotPassword": {
+      "title": "Reimposta la password",
+      "description": "Inserisci l'email del tuo account qua sotto, riceverai via mail le istruzioni per reimpostare la password.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "mario@esempio.it",
+      "emailError": "Email non valida",
+      "submit": "Invia",
+      "success": "Email inviata con successo!"
+    },
+    "resetPassword": {
+      "title": "Inserisci la nuova password",
+      "description": "Una volta resettata, potrai usare la nuova password per accedere al tuo account.",
+      "missingToken": "Token mancante nell'URL",
+      "invalidToken": "Token non valido",
+      "passwordLabel": "Nuova password",
+      "passwordPlaceholder": "••••••••",
+      "passwordError": "La password deve contenere almeno 8 caratteri",
+      "confirmPasswordLabel": "Conferma nuova password",
+      "confirmPasswordPlaceholder": "••••••••",
+      "passwordMismatch": "Le password non corrispondono",
+      "submit": "Reset Password"
+    },
+    "adminLogin": {
+      "title": "Accedi",
+      "emailLabel": "Email",
+      "emailPlaceholder": "admin@esempio.it",
+      "emailError": "Email non valida",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "passwordError": "La password deve contenere almeno 8 caratteri",
+      "invalidCredentials": "Email o password non corretti",
+      "submit": "Accedi"
+    }
+  },
+  "location": {
+    "modalTitle": "Ti aiutiamo a trovare i migliori Spot vicino a te",
+    "modalDescription": "Per offrirti suggerimenti precisi e nelle vicinanze, abbiamo bisogno della tua posizione. Non preoccuparti, non la condivideremo con nessuno!",
+    "later": "Più tardi",
+    "allow": "Consenti subito"
+  },
+  "admin": {
+    "home": {
+      "title": "Admin"
+    },
+    "spots": {
+      "title": "Gestione Spot",
+      "searchPlaceholder": "Cerca per nome...",
+      "placePlaceholder": "Luogo...",
+      "activeFilter": "Attivi",
+      "publicFilter": "Pubblici",
+      "search": "Cerca",
+      "reset": "Reset",
+      "loadingError": "Errore nel caricamento degli spot",
+      "noResults": "Nessun spot trovato.",
+      "nameHeader": "Nome",
+      "placeHeader": "Luogo",
+      "activeHeader": "Attivo",
+      "publicHeader": "Pubblico",
+      "actionsHeader": "Azioni",
+      "deleteSuccess": "Spot cancellato correttamente",
+      "deleteError": "Errore nella cancellazione dello spot",
+      "paginationPrev": "← Precedente",
+      "paginationNext": "Successiva →",
+      "paginationInfo": "Pagina {page} di {totalPages}",
+      "createNew": "Crea Spot"
+    },
+    "createSpot": {
+      "title": "Crea Spot",
+      "namePlaceholder": "Nome",
+      "nameRequired": "Il nome è obbligatorio",
+      "descriptionPlaceholder": "Descrizione",
+      "imagesLabel": "Immagini ({count}/5)",
+      "uploadError": "Errore upload: {message}",
+      "imagesHint": "Fino a 5 immagini (max 4MB)",
+      "imageUrlError": "URL immagine non valido",
+      "publicLabel": "Pubblico",
+      "activeLabel": "Attivo",
+      "submit": "Crea",
+      "latitudeLabel": "Latitudine: {value}",
+      "longitudeLabel": "Longitudine: {value}",
+      "placeLabel": "Luogo: {value}",
+      "addressLabel": "Indirizzo: {value}",
+      "noLocation": "Nessuna posizione selezionata!",
+      "locationHint": "Clicca sulla mappa per poter creare lo spot",
+      "success": "Spot creato con successo"
+    }
+  },
+  "locale": {
+    "switch": "Cambia lingua",
+    "it": "Italiano",
+    "en": "English"
+  }
+}
