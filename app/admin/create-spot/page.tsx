@@ -83,11 +83,11 @@ export default function AdminCreateSpotPage() {
       setUploadedImages(newImages);
       setValue(
         "images",
-        newImages.map((img) => img.url)
+        newImages.map((img) => img.url),
       );
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Errore durante l'eliminazione"
+        err instanceof Error ? err.message : "Errore durante l'eliminazione",
       );
     } finally {
       setDeletingIndex(null);
@@ -197,17 +197,17 @@ export default function AdminCreateSpotPage() {
                 endpoint="imageUploader"
                 onClientUploadComplete={(res) => {
                   const newImages = res.map((file) => ({
-                    url: file.ufsUrl,
+                    url: file.url,
                     key: file.key,
                   }));
                   const allImages = [...uploadedImages, ...newImages].slice(
                     0,
-                    5
+                    5,
                   );
                   setUploadedImages(allImages);
                   setValue(
                     "images",
-                    allImages.map((img) => img.url)
+                    allImages.map((img) => img.url),
                   );
                 }}
                 onUploadError={(error: Error) => {
@@ -312,7 +312,7 @@ export default function AdminCreateSpotPage() {
             lat: number,
             lng: number,
             placeName: string,
-            address: string
+            address: string,
           ) => setLocation({ lat, lng, placeName, address })}
         />
       </div>

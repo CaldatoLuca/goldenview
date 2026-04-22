@@ -6,7 +6,6 @@ export default withAuth(
     const token = req.nextauth.token;
     const isAdmin = token?.role === "ADMIN";
     const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
-
     if (isAdminRoute && !isAdmin) {
       return NextResponse.redirect(new URL("/", req.url));
     }
@@ -17,7 +16,7 @@ export default withAuth(
     callbacks: {
       authorized: ({ token }) => !!token,
     },
-  }
+  },
 );
 
 export const config = {
