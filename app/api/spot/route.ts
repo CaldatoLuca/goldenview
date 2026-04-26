@@ -25,20 +25,29 @@ export async function GET(req: NextRequest) {
     const skip = (page - 1) * limit;
 
     const where: any = {};
+    const andClauses: any[] = [];
 
     if (!session || session.user.role !== "ADMIN") {
-      where.OR = [
-        { public: true },
-        ...(session ? [{ userId: session.user.id }] : []),
-      ];
+      andClauses.push({
+        OR: [
+          { public: true },
+          ...(session ? [{ userId: session.user.id }] : []),
+        ],
+      });
     }
 
     if (search && search.trim()) {
-      where.OR = [
-        { name: { contains: search.trim(), mode: "insensitive" } },
-        { description: { contains: search.trim(), mode: "insensitive" } },
-        { address: { contains: search.trim(), mode: "insensitive" } },
-      ];
+      andClauses.push({
+        OR: [
+          { name: { contains: search.trim(), mode: "insensitive" } },
+          { description: { contains: search.trim(), mode: "insensitive" } },
+          { address: { contains: search.trim(), mode: "insensitive" } },
+        ],
+      });
+    }
+
+    if (andClauses.length) {
+      where.AND = andClauses;
     }
 
     if (active === "true") {
