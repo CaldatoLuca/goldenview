@@ -36,6 +36,10 @@ yarn-error.log*
 .env.development
 .env.production
 .env.*.local
+# difesa contro typo del prefisso (env.development invece di .env.development)
+env.development
+env.production
+env.*.local
 !.env.example
 
 # vercel
