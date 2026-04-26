@@ -7,15 +7,21 @@ import {
   resetPasswordSchema,
 } from "@/lib/api/validations/userSchema";
 import { hash } from "bcryptjs";
+import { createHash } from "crypto";
 
 const prisma = new PrismaClient();
+
+const hashToken = (token: string) =>
+  createHash("sha256").update(token).digest("hex");
 
 export async function POST(req: Request) {
   const { token } = await validate(validateTokenSchema, req);
 
   try {
+    const tokenHash = hashToken(token);
+
     const resetToken = await prisma.passwordResetToken.findUnique({
-      where: { token },
+      where: { token: tokenHash },
     });
 
     if (!resetToken || resetToken.expiresAt < new Date()) {
@@ -38,9 +44,11 @@ export async function PUT(req: Request) {
       req
     );
 
+    const tokenHash = hashToken(token);
+
     const result = await prisma.$transaction(async (tx) => {
       const resetToken = await tx.passwordResetToken.findUnique({
-        where: { token },
+        where: { token: tokenHash },
       });
 
       if (!resetToken) {
@@ -48,7 +56,7 @@ export async function PUT(req: Request) {
       }
 
       if (resetToken.expiresAt < new Date()) {
-        await tx.passwordResetToken.delete({ where: { token } });
+        await tx.passwordResetToken.delete({ where: { token: tokenHash } });
         throw new ApiError("Token scaduto", ErrorTypes.BAD_REQUEST.status);
       }
 
@@ -70,7 +78,7 @@ export async function PUT(req: Request) {
           },
         }),
 
-        tx.passwordResetToken.delete({ where: { token } }),
+        tx.passwordResetToken.delete({ where: { token: tokenHash } }),
       ]);
 
       return updatedUser;
