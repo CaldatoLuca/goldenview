@@ -1,11 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
 import { ApiError, handleApiError, ErrorTypes } from "@/lib/api/errors";
 import { validate } from "@/lib/api/validations/validate";
 import { registerSchema } from "@/lib/api/validations/userSchema";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
