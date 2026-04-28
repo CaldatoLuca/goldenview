@@ -1,8 +1,7 @@
-import { PrismaClient, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { NextResponse, NextRequest } from "next/server";
 import { ApiError, handleApiError, ErrorTypes } from "@/lib/api/errors";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
@@ -78,7 +77,5 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     return handleApiError(error);
-  } finally {
-    await prisma.$disconnect();
   }
 }

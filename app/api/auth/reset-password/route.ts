@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { ApiError, handleApiError, ErrorTypes } from "@/lib/api/errors";
 import { validate } from "@/lib/api/validations/validate";
@@ -8,8 +7,7 @@ import {
 } from "@/lib/api/validations/userSchema";
 import { hash } from "bcryptjs";
 import { createHash } from "crypto";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 const hashToken = (token: string) =>
   createHash("sha256").update(token).digest("hex");
