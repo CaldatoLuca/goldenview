@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState, useRef } from "react";
 import { Spinner } from "@/components/ui/spinner";
-import { spotService } from "@/lib/services/spotService";
+import { spotService } from "@/lib/services/spot.service";
 import { uploadThingService } from "@/lib/services/uploadThing.service";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";

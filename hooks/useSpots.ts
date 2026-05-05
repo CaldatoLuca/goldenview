@@ -4,7 +4,7 @@ import {
   GetSpotsParams,
   GetSpotsResponse,
   Spot,
-} from "@/lib/services/spotService";
+} from "@/lib/services/spot.service";
 
 export function useSpots(params: GetSpotsParams) {
   return useQuery<GetSpotsResponse>({
@@ -42,7 +42,7 @@ export function useLatestSpots() {
 export function useNearbySpots(
   lat: number | undefined,
   lng: number | undefined,
-  params?: Omit<GetSpotsParams, "latitude" | "longitude">
+  params?: Omit<GetSpotsParams, "latitude" | "longitude">,
 ) {
   const queryParams: GetSpotsParams = {
     ...params,

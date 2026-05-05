@@ -1,4 +1,4 @@
-import { GetSpotsResponse, Spot } from "@/lib/services/spotService";
+import { GetSpotsResponse, Spot } from "@/lib/services/spot.service";
 import SpotCard from "./spot-card/SpotCard";
 import { AlertCircle } from "lucide-react";
 import SpotCardSkeleton from "./spot-card/Skeleton";
@@ -39,9 +39,7 @@ export default function SpotSection({
               <h4 className="text-lg font-semibold text-red-900 mb-2">
                 {t("errorTitle")}
               </h4>
-              <p className="text-red-700 text-sm mb-4">
-                {t("errorMessage")}
-              </p>
+              <p className="text-red-700 text-sm mb-4">{t("errorMessage")}</p>
               <button
                 onClick={() => window.location.reload()}
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
