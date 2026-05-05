@@ -1,12 +1,10 @@
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { ApiError, handleApiError, ErrorTypes } from "@/lib/api/errors";
 import { validate } from "@/lib/api/validations/validate";
 import { forgotPasswordSchema } from "@/lib/api/validations/userSchema";
 import { createHash, randomBytes } from "crypto";
 import { sendResetPasswordEmail } from "@/lib/services/resend.service";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 const TOKEN_BYTES = 32;
 const TOKEN_EXPIRATION_MS = 1000 * 60 * 60;

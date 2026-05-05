@@ -1,11 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { PrismaClient, Prisma } from "@prisma/client";
 import axios from "axios";
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-
-const prisma = new PrismaClient();
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
