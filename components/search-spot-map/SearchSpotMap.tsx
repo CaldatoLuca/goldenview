@@ -4,7 +4,7 @@ import mapboxgl from "mapbox-gl";
 import { createRoot } from "react-dom/client";
 import CustomPopup from "./CustomPopup";
 import CustomMarker from "./CustomMarker";
-import { Spot } from "@/lib/services/spotService";
+import { Spot } from "@/lib/services/spot.service";
 
 const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 mapboxgl.accessToken = MAPBOX_API_KEY!;
@@ -53,7 +53,7 @@ export default function SearchSpotMap({ longitude, latitude, spots }: Props) {
           lat={spot.latitude}
           lng={spot.longitude}
           slug={spot.slug}
-        />
+        />,
       );
 
       const popup = new mapboxgl.Popup({
@@ -74,7 +74,7 @@ export default function SearchSpotMap({ longitude, latitude, spots }: Props) {
               zoom: 14,
             })
           }
-        />
+        />,
       );
 
       const marker = new mapboxgl.Marker(markerEl)

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSpots } from "@/hooks/useSpots";
-import { spotService } from "@/lib/services/spotService";
+import { spotService } from "@/lib/services/spot.service";
 
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
@@ -27,10 +27,10 @@ export default function AdminSpotsPage() {
   const [search, setSearch] = useState("");
   const [place, setPlace] = useState("");
   const [activeFilter, setActiveFilter] = useState<boolean | undefined>(
-    undefined
+    undefined,
   );
   const [publicFilter, setPublicFilter] = useState<boolean | undefined>(
-    undefined
+    undefined,
   );
   const [page, setPage] = useState(1);
 
